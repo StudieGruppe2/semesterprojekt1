@@ -8,3 +8,117 @@ const timestamp = (await db.query("select now() as timestamp")).rows[0][
 console.log(`Recreating database on ${timestamp}...`);
 /* await er den der gør at koden venter på at køre til resultatet er klar.
 det er i parantes så den tages først */
+
+await db.query("drop table if exists users");
+await db.query("drop table if exists mood");
+await db.query("drop table if exists artist");
+await db.query("drop table if exists playlist");
+await db.query("drop table if exists genre");
+await db.query("drop table if exists genre_vote");
+await db.query("drop table if exists tracks");
+await db.query("drop table if exists track_vote");
+await db.query("drop table if exists partymember");
+await db.query("drop table if exists party");
+await db.query("drop table if exists party_playlist");
+
+// TODO: drop more tables, if they exist
+
+console.log("Creating tables...");
+// en query er en database-forespørgsel - en slags kommando man sender til databasen for at gøre noget
+await db.query(` 
+    create table users (
+        user_id bigint primary key,
+        user_name text
+    )
+`);
+
+await db.query(` 
+    create table mood (
+        mood_id integer primary key,
+        mood_type text
+    )
+`);
+
+await db.query(` 
+    create table artist (
+        artist_id integer primary key,
+        artist_name text not null
+    )
+`);
+
+await db.query(` 
+    create table playlist (
+    playlist_id integer primary key,
+    track_id integer not null references tracks (track_id),
+    artist_id integer not null references artist (artist_id)
+        
+    )
+`);
+
+await db.query(` 
+    create table genre (
+       genre_id       integer primary key,
+       genre_type     text, 
+       mood_id        integer not null references mood (mood_id),
+       genre_vote_id  integer not null references genre_vote (genre_vote_id)
+    )
+`);
+
+await db.query(` 
+    create table genre_vote (
+        genre_vote_id integer primary key,
+        vote_type boolean not null, 
+        genre_id integer references genre (genre_id)
+    )
+`);
+
+await db.query(` 
+    create table tracks(
+      track_id integer primary key,
+      title text, 
+      'duration in ms' integer,
+      track_vote_id integer references track_vote (track_vote_id),
+      artist_id integer not null references artist (artist_id)
+    )
+`);
+
+await db.query(` 
+    create table track_vote (
+       track_vote_id integer primary key,
+       vote_type boolean default false,
+       track_id integer not null references tracks (tracks_id)
+    )
+`);
+
+await db.query(` 
+    create table partymember (
+       partymember_id integer primary key,
+       role boolean not null,
+       status boolean not null default true,
+       party_id integer references party (party_id),
+       user_id integer references user (user_id)
+    )
+`);
+
+await db.query(` 
+    create table party (
+       party_code integer unique not null,
+       party_name text not null,
+       party_id integer primary key,
+       playlist_id integer not null references playlist (playlist_id),
+       partymember_id integer not null references partymember (partymember_id)
+
+    )
+`);
+
+await db.query(` 
+    create table party_playlist (
+       track_id integer not null references tracks (track_id),
+       playlist_id integer not null references playlist (playlist_id)
+    )
+`);
+
+// TODO: import data from csv files into tables
+
+await db.end();
+console.log('Database successfully recreated.');
