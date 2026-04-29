@@ -27,30 +27,30 @@ console.log("Creating tables...");
 // en query er en database-forespørgsel - en slags kommando man sender til databasen for at gøre noget
 await db.query(` 
     create table users (
-        user_id bigint primary key,
-        user_name text
+        user_id      bigint primary key,
+        user_name    text
     )
 `);
 
 await db.query(` 
     create table mood (
-        mood_id integer primary key,
-        mood_type text
+        mood_id       integer primary key,
+        mood_type     text
     )
 `);
 
 await db.query(` 
     create table artist (
-        artist_id integer primary key,
-        artist_name text not null
+        artist_id       integer primary key,
+        artist_name     text not null
     )
 `);
 
 await db.query(` 
     create table playlist (
-    playlist_id integer primary key,
-    track_id integer not null references tracks (track_id),
-    artist_id integer not null references artist (artist_id)
+        playlist_id         integer primary key,
+        track_id            integer not null references tracks (track_id),
+        artist_id           integer not null references artist (artist_id)
         
     )
 `);
@@ -66,55 +66,55 @@ await db.query(`
 
 await db.query(` 
     create table genre_vote (
-        genre_vote_id integer primary key,
-        vote_type boolean not null, 
-        genre_id integer references genre (genre_id)
+        genre_vote_id       integer primary key,
+        vote_type           boolean not null, 
+        genre_id            integer references genre (genre_id)
     )
 `);
 
 await db.query(` 
     create table tracks(
-      track_id integer primary key,
-      title text, 
-      'duration in ms' integer,
-      track_vote_id integer references track_vote (track_vote_id),
-      artist_id integer not null references artist (artist_id)
+      track_id            integer primary key,
+      title               text, 
+      'duration in ms'    integer,
+      track_vote_id       integer references track_vote (track_vote_id),
+      artist_id           integer not null references artist (artist_id)
     )
 `);
 
 await db.query(` 
     create table track_vote (
-       track_vote_id integer primary key,
-       vote_type boolean default false,
-       track_id integer not null references tracks (tracks_id)
+       track_vote_id        integer primary key,
+       vote_type            boolean default false,
+       track_id             integer not null references tracks (tracks_id)
     )
 `);
 
 await db.query(` 
     create table partymember (
-       partymember_id integer primary key,
-       role boolean not null,
-       status boolean not null default true,
-       party_id integer references party (party_id),
-       user_id integer references user (user_id)
+       partymember_id          integer primary key,
+       role                    boolean not null,
+       status                  boolean not null default true,
+       party_id                integer references party (party_id),
+       user_id                 integer references user (user_id)
     )
 `);
 
 await db.query(` 
     create table party (
-       party_code integer unique not null,
-       party_name text not null,
-       party_id integer primary key,
-       playlist_id integer not null references playlist (playlist_id),
-       partymember_id integer not null references partymember (partymember_id)
+       party_code           integer unique not null,
+       party_name           text not null,
+       party_id             integer primary key,
+       playlist_id          integer not null references playlist (playlist_id),
+       partymember_id       integer not null references partymember (partymember_id)
 
     )
 `);
 
 await db.query(` 
     create table party_playlist (
-       track_id integer not null references tracks (track_id),
-       playlist_id integer not null references playlist (playlist_id)
+       track_id           integer not null references tracks (track_id),
+       playlist_id        integer not null references playlist (playlist_id)
     )
 `);
 
