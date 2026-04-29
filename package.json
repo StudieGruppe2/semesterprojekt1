@@ -1,0 +1,19 @@
+{
+  "name": "playr",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev-server": "nodemon backend/server.js",
+    "prod-server": "node backend/server.js",
+    "create-db": "node db/createDb.js"
+  },
+  "dependencies": {
+    "express": "5.2.1",
+    "pg": "8.20.0",
+    "dotenv": "17.3.1",
+    "pg-upload": "0.0.10"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.14"
+  }
+}
