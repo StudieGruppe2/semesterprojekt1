@@ -17,7 +17,6 @@ export async function connect() {
     const client = new pg.Client(env);
     await client.connect();
     return client;
-
 }
   
 export function pool() {
