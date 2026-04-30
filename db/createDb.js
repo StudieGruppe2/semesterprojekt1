@@ -50,7 +50,7 @@ await db.query(`
     create table genre (
        genre_id     integer primary key,
        genre_type   text not null, 
-       mood_id      integer not null references mood (mood_id)
+       mood_id      integer not null references mood (mood_id),
        playlist_id  integer not null references playlist (playlist_id)
     )
 `);
@@ -68,8 +68,8 @@ await db.query(`
 await db.query(` 
     create table playlist (
         playlist_id      integer primary key
-        track_id         integer unique not null references tracks (track_id
-        artist_id        integer unique not null references artist (artist_id)
+        track_id         integer unique not null references tracks (track_id),
+        artist_id        integer unique not null references artist (artist_id),
         genre_id         integer unique not null references genre (genre_id)
     )
 `);
@@ -79,9 +79,9 @@ await db.query(`
        party_id         integer primary key,
        party_code       integer unique not null,
        party_name       text not null,
-       playlist_id      integer not null references playlist (playlist_id)
-       user_id          integer unique not null
-       timestamp        timestamp
+       playlist_id      integer not null references playlist (playlist_id),
+       user_id          integer unique not null,
+       created_at       timestamp default now
     )
 `);
 
@@ -106,7 +106,7 @@ await db.query(`
     create table genre_vote (
         genre_vote_id         integer unique not null,
         genre_id              integer not null references genre (genre_id),
-        user_id               bigint references users (user_id)
+        user_id               bigint references users (user_id),
         party_id              integer references party (party_id)
     )
 `);

@@ -13,12 +13,12 @@ const env = {
 };
 
 
-export async function connect() {
+export async function connect() { //en enkelt forbindelse
     const client = new pg.Client(env);
     await client.connect();
     return client;
 }
   
-export function pool() {
+export function pool() { // en pool af forbindelser/mange forbindelser. Bruges til at genbruge eksisterende forbindelser
     return new pg.Pool(env);
 }
