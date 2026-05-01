@@ -9,7 +9,7 @@ const server = express();
 server.use(express.static('frontend'));
 server.use(onEachRequest);
 server.get('/api/mood/:mood_id/mood_type', onGetMoodTypeByMoodId);
-server.get('/api/genre/:genre_id/genre_type', onGetGenreWinnerByGenreVote);
+server.get('/api/party/:party_id/genre_winner', onGetGenreWinnerByGenreVote);
 server.get('/api/party/:party_id/playlist',onGetPartyInformation);
 
 server.listen(port, onServerReady);
