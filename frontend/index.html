@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>playr</title>
+        <script src="jsonview.js"></script>
+        <script src="endpoint-user.js"></script>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+
+    </body>
+    <script>
+        useEndpoint('GET', '/api/mood/:mood_id/mood_type/200');
+        useEndpoint('GET', '/api/genre/:genre_id/genre_type/400');
+        useEndpoint('GET', '/api/party/:party_id/playlist/600');
+    </script>
+</html>

@@ -1,9 +1,9 @@
 genre_id,genre_type,mood_id
-400,pop,200
-401,rock,202
-402,bossa_nova,203
+400,pop,201
+401,rock,201
+402,bossa_nova,200
 403,house,202
 404,jazz,203
-405,classical,201
-406,indie,201
+405,classical,203
+406,indie,200
 407,techno,202

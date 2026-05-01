@@ -4,6 +4,7 @@ import { pool } from '../db/connect.js';
 const db = pool();
 
 const port = 3005;
+
 const server = express();
 server.use(express.static('frontend'));
 server.use(onEachRequest);
@@ -11,68 +12,83 @@ server.get('/api/mood/:mood_id/mood_type', onGetMoodTypeByMoodId);
 server.get('/api/genre/:genre_id/genre_type', onGetGenreWinnerByGenreVote);
 server.get('/api/party/:party_id/playlist',onGetPartyInformation);
 
+server.listen(port, onServerReady);
+
 async function onGetMoodTypeByMoodId (request, response) {
     const mood_id = request.params.mood_id;
-    const dbresult = await db.query(`
-        select     distinct mood_type
+    const dbResult = await db.query(`
+        select     mood_type mt
         from       mood m
         where      mood_id = $1`, // kun $1 fordi vi kun vælger ét mood
     [mood_id]);
-    response.json(dbresult.rows);
+    response.json(dbResult.rows);
 }
 
-async function onGetGenreWinnerByGenreVote (request, response) {
+async function onGetGenreWinnerByGenreVote(request, response) {
     const party_id = request.params.party_id;
 
-    const dbresult = await db.query(`
-        select      genre_id, count(*) as stemmer
-        from        genre_vote
-        where       party_id = $1
-        group by    genre_id
-        order by    stemmer desc
-        limit 1`,
+    // Hent alle stemmer for dette party
+    const dbResult = await db.query(`
+        SELECT   genre_id, COUNT(*) AS stemmer
+        FROM     genre_vote
+        WHERE    party_id = $1
+        GROUP BY genre_id
+        ORDER BY stemmer DESC`,
         [party_id]);
-        
-    if (dbresult.rows.length === 0){
+
+    // Hvis ingen har stemt, vælg en tilfældig genre
+    if (dbResult.rows.length === 0) { 
         const genres = await db.query(`
-            select   genre_id
-            from     genre
-            where    mood_id = $1`,
-        [party_id]);
-        
-    const random = genres.rows[Math.floor(Math.random() * genres.rows.length)];
-        return response.json(random);
+            SELECT genre_id
+            FROM   genre
+            WHERE  mood_id = $1`,
+            [party_id]);
+
+        const tilfældig = genres.rows[Math.floor(Math.random() * genres.rows.length)];
+        return response.json(tilfældig);
     }
-    response.json(dbresult.rows);
+// hvis en genre får alle stemmerne   
+   if (dbResult.rows.length === 1) {
+        return response.json(dbResult.rows[0]);
+    }
+    // Hent antal stemmer for genre 1 og genre 2
+    const stemmer_genre1 = dbResult.rows[0].stemmer;
+    const stemmer_genre2 = dbResult.rows[1].stemmer;
+
+    // Hvis de to genre har lige mange stemmer, vælg en tilfældig af dem
+    if (stemmer_genre1 === stemmer_genre2) {
+        const uafgjort = [dbResult.rows[0], dbResult.rows[1]];
+        const tilfældig = uafgjort[Math.floor(Math.random() * uafgjort.length)];
+        return response.json(tilfældig);
+    }
+
+    // Ellers returner genre med flest stemmer
+    return response.json(dbResult.rows[0]);
 }
 
 
 async function onGetPartyInformation(request, response) {
   const partyId = request.params.party_id;
 
-  const dbresult = await db.query(`
-    SELECT
-      t.track_id,
-      t.title,
-      a.artist_name AS artist,
-      t.duration,
-      COUNT(tv.track_vote_id) AS stemmer
-    FROM party p
-    JOIN tracks_playlist tp
-      ON tp.playlist_id = p.playlist_id
-    JOIN tracks t
-      ON t.track_id = tp.track_id
-    JOIN artist a
-      ON a.artist_id = t.artist_id
-    LEFT JOIN track_vote tv
-      ON tv.track_id = t.track_id
-     AND tv.party_id = p.party_id
-    WHERE p.party_id = $1
-    GROUP BY t.track_id, t.title, a.artist_name, t.duration
-    ORDER BY stemmer DESC;
+  const dbResult = await db.query(`
+    select                       t.track_id, t.title, a.artist_name AS artist, t.duration_ms,
+    count (tv.track_vote_id) as  stemmer
+    from                         party p
+    join                         party_playlist pp
+      on                         pp.playlist_id = p.playlist_id
+    join                         tracks t
+      on                         t.track_id = pp.track_id
+    join                         artist a
+      on                         a.artist_id = t.artist_id
+    left join                    track_vote tv
+      on                         tv.track_id = t.track_id
+     and                         tv.party_id = p.party_id
+    where                        p.party_id = $1
+    group by                     t.track_id, t.title, a.artist_name, t.duration_ms
+    order by                     stemmer DESC;
   `, [partyId]);
 
-  response.json(dbresult.rows);
+  response.json(dbResult.rows);
 }
 
 
