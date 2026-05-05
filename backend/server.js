@@ -74,10 +74,10 @@ async function onGetPartyInformation(request, response) {
     select                       t.track_id, t.title, a.artist_name AS artist, t.duration_ms,
     count (tv.track_vote_id) as  stemmer
     from                         party p
-    join                         party_playlist pp
-      on                         pp.playlist_id = p.playlist_id
+    join                         track_playlist tp
+      on                         tp.playlist_id = p.playlist_id
     join                         tracks t
-      on                         t.track_id = pp.track_id
+      on                         t.track_id = tp.track_id
     join                         artist a
       on                         a.artist_id = t.artist_id
     left join                    track_vote tv

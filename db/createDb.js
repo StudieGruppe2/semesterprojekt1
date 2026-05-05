@@ -9,7 +9,7 @@ console.log(`Recreating database on ${timestamp}...`);
 /* await er den der gør at koden venter på at køre til resultatet er klar.
 det er i parantes så den tages først */
 
-await db.query("drop table if exists party_playlist cascade");
+await db.query("drop table if exists track_playlist cascade");
 await db.query("drop table if exists party cascade");
 await db.query("drop table if exists genre_vote cascade");
 await db.query("drop table if exists track_vote cascade");
@@ -83,7 +83,7 @@ await db.query(`
 `);
 
 await db.query(` 
-    create table party_playlist (
+    create table track_playlist (
        track_id          integer not null references tracks (track_id),
        playlist_id       integer not null references playlist (playlist_id),
        sort_order        integer default 0
