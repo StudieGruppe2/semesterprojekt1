@@ -1,69 +1,80 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   background: linear-gradient(to right, #cdffd8, #94b9ff);
   min-height: 100vh;
+  margin: 0;
+  padding: 45px 60px 140px;
+  font-family: "Proza Libre", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 20px;
-  font-family: "Proza Libre", sans-serif;
 }
 
 .h1 {
-  font-size: clamp(30px, 5vw, 60px);
+  font-size: clamp(34px, 5vw, 68px);
   font-weight: 900;
-  letter-spacing: clamp(5px, 2vw, 20px);
+  letter-spacing: clamp(8px, 2vw, 28px);
   background: linear-gradient(to right, #000000, #3533cd);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
-  margin-bottom: 2%;
+  margin-top: 0%;
+  text-align: center;
+}
+
+.main-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .container {
-  width: 90%;
-  max-width: 900px;
+  width: 65%;
+  max-width: 1050px;
+  min-width: 750px;
 }
 
 .box1 {
   background: #473dc6;
   border-radius: 30px;
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 1);
-  padding: 30px 40px;
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.55);
+  padding: 45px 55px;
 }
 
-/* Rækker */
 .row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr 1fr;
+  grid-template-columns: 2fr 2fr 1fr 1.2fr;
   align-items: center;
-  padding: 12px 0;
   color: #cfe6ff;
-  font-size: 18px;
+  font-size: 20px;
+  padding: 22px 0;
 }
 
 .header-row {
   font-weight: 900;
-  font-size: 16px;
-  letter-spacing: 1px;
-  border-bottom: 2px solid #ff66c4;
-  padding-bottom: 15px;
-  margin-bottom: 5px;
+  font-size: 18px;
+  letter-spacing: 2px;
+  border-bottom: 3px solid #ff66c4;
+  padding-top: 0;
+  padding-bottom: 18px;
+  margin-bottom: 8px;
 }
 
-/* Like knap */
 .like-btn {
   background: none;
   border: none;
   cursor: pointer;
   justify-self: center;
+  padding: 0;
 }
 
 .like-btn img {
-  width: 40px;
-  height: 40px;
-  filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.4));
+  width: 48px;
+  height: 48px;
+  filter: drop-shadow(5px 5px 0px rgba(0, 0, 0, 0.4));
   transition: transform 0.2s ease;
 }
 
@@ -71,72 +82,122 @@ body {
   transform: scale(1.2);
 }
 
-/* Musik player */
+.bottom-area {
+  position: fixed;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 86%;
+  max-width: 1350px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 45px;
+}
+
 .player {
   display: flex;
   align-items: center;
-  gap: 20px;
-  width: 90%;
-  max-width: 900px;
-  margin-top: 20px;
+  gap: 24px;
+  flex: 1;
 }
 
 .album-cover {
-  width: 70px;
-  height: 70px;
+  width: 78px;
+  height: 78px;
   background: linear-gradient(135deg, #1a1a3e, #473dc6);
-  border-radius: 12px;
+  border-radius: 14px;
   flex-shrink: 0;
 }
 
 .player-bar {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 18px;
   flex: 1;
 }
 
 .time {
   color: #3533cd;
+
   font-weight: 800;
-  font-size: 20px;
+  font-size: 24px;
+
+  min-width: 80px;
 }
 
 .progress-bar {
   flex: 1;
+
   height: 8px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.45);
+
+  border-radius: 20px;
+
   overflow: hidden;
 }
 
 .progress {
   width: 0%;
   height: 100%;
+
   background: #3533cd;
-  border-radius: 10px;
+
+  border-radius: 20px;
 }
 
-/* Leave party knap */
 .leavebtn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 25px;
-  border-radius: 50px;
-  border: none;
-  background-color: #ff66c4;
-  color: #cfe6ff;
   width: 250px;
   height: 75px;
+
+  border-radius: 50px;
+  border: none;
+
+  background-color: #ff66c4;
+
+  color: #cfe6ff;
+
   font-family: "Proza Libre", sans-serif;
   font-weight: 800;
-  font-size: larger;
+  font-size: 20px;
+
   cursor: pointer;
+
+  box-shadow: 0px 8px 14px rgba(0, 0, 0, 0.35);
+
   transition: transform 0.2s ease;
 }
 
 .leavebtn:hover {
   transform: scale(1.05);
-  background-color: #ff66c4;
+}
+
+@media (max-width: 900px) {
+  body {
+    padding: 30px 20px 180px;
+  }
+
+  .container {
+    width: 95%;
+    min-width: unset;
+  }
+
+  .box1 {
+    padding: 30px 25px;
+  }
+
+  .row {
+    font-size: 15px;
+    grid-template-columns: 1.5fr 1.5fr 1fr 1fr;
+  }
+
+  .bottom-area {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .leavebtn {
+    align-self: flex-end;
+  }
 }
