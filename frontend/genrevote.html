@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>genrevote</title>
+    <link rel="stylesheet" href="genrevote.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Proza+Libre:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1 class="h1">Pick the sound</h1>
+    <div class="container">
+      <div class="box1">
+        <h2 class="h2">Vote for your favorite genre</h2>
+
+        <!-- Hjerte knapper -->
+        <div class="vote-container">
+          <button class="genre-btn" onclick="vote('genre1')">
+            <img src="pinkhjerte.png" alt="genre1" />
+            <p class="p">genre1</p>
+          </button>
+
+          <p class="vs">VS</p>
+
+          <button class="genre-btn" onclick="vote('genre2')">
+            <img src="blåhjerte.png" alt="genre2" />
+            <p class="p">genre2</p>
+          </button>
+        </div>
+
+        <!-- Vote bar lige under -->
+        <div class="vote-bar-container">
+          <div class="vote-bar">
+            <div
+              class="vote-bar-genre1"
+              id="bar-genre1"
+              style="width: 50%"
+            ></div>
+            <div
+              class="vote-bar-genre2"
+              id="bar-genre2"
+              style="width: 50%"
+            ></div>
+          </div>
+          <div class="vote-bar-labels">
+            <span id="pct-genre1">50%</span>
+            <span id="pct-genre2">50%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a href="index.html">
+      <img class="undo" src="undoknap.png" alt="undoknap" />
+    </a>
+    <button id="start" class="beginbtn">Begin listening ➔</button><br />
+  </body>
+</html>

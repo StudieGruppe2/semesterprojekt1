@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>playlist</title>
+    <link rel="stylesheet" href="playlist.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Proza+Libre:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1 class="h1">You're in the queue</h1>
+
+    <div class="container">
+      <div class="box1">
+        <!-- Header række -->
+        <div class="row header-row">
+          <span>TITLE</span>
+          <span>ARTIST</span>
+          <span>TIME</span>
+          <span>TAKE A VOTE</span>
+        </div>
+
+        <!-- Sang rækker -->
+        <div class="row">
+          <span>Sang 1.</span>
+          <span>Artist 1.</span>
+          <span>3 min.</span>
+          <button class="like-btn">
+            <img src="pinkhjerte.png" alt="like" />
+          </button>
+        </div>
+
+        <div class="row">
+          <span>Sang 2.</span>
+          <span>Artist 2.</span>
+          <span>3 min.</span>
+          <button class="like-btn">
+            <img src="pinkhjerte.png" alt="like" />
+          </button>
+        </div>
+
+        <div class="row">
+          <span>Sang 3.</span>
+          <span>Artist 3.</span>
+          <span>3 min.</span>
+          <button class="like-btn">
+            <img src="pinkhjerte.png" alt="like" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Musik player -->
+    <div class="player">
+      <div class="album-cover"></div>
+      <div class="player-bar">
+        <span class="time">00:00</span>
+        <div class="progress-bar">
+          <div class="progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leave party knap -->
+    <button class="leavebtn">Leave party →</button>
+  </body>
+</html>

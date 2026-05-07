@@ -1,0 +1,180 @@
+body {
+  background: linear-gradient(to right, #cdffd8, #94b9ff);
+}
+.h1 {
+  text-align: center;
+  font-family: "Proza Libre", sans-serif;
+  font-weight: 900;
+  font-style: bold;
+  font-size: 100px;
+  margin-top: 0%;
+  letter-spacing: 20px;
+  margin-bottom: 2%;
+  margin-top: 0%;
+  padding-top: 0%;
+  background: linear-gradient(to right, #000000, #3533cd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
+}
+
+.h2 {
+  text-align: center;
+  font-family: "Proza Libre", sans-serif;
+  color: #cfe6ff;
+  font-weight: 900;
+  font-style: bold;
+  margin-bottom: 5%;
+  margin-top: 0%;
+  font-size: 30px;
+  filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
+}
+
+.h3 {
+  text-align: left;
+  color: #cfe6ff;
+  font-family: "Proza Libre", sans-serif;
+  font-weight: 900;
+  font-style: bold;
+  font-size: 50px;
+  margin-bottom: 1%;
+  margin-left: 3%;
+}
+
+.p {
+  color: #cfe6ff;
+  font-family: "Proza Libre", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  text-align: center;
+  font-size: 25px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
+}
+
+.box1 {
+  width: 650px;
+  height: 370px;
+  background: #473dc6;
+  border-radius: 30px;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 1);
+  padding: 30px 80px 90px 80px;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.undo {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 100px;
+  height: 100px;
+  filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
+}
+
+.undo:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+.beginbtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 25px;
+  border-radius: 50px;
+  border: none;
+  background-color: #ff66c4;
+  color: #cfe6ff;
+  width: 250px;
+  height: 75px;
+  font-family: "Proza Libre", sans-serif;
+  font-weight: 800;
+  font-size: larger;
+  cursor: pointer;
+  transition: transform 0.2s;
+  filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
+}
+
+.beginbtn:hover {
+  transform: scale(1.05);
+  background-color: #ff66c4;
+}
+
+.vote-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.genre-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.genre-btn img {
+  width: 100px;
+  height: 80px;
+  border-radius: 10px;
+  filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
+}
+
+.genre-btn:hover img {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+.vs {
+  font-family: "Proza Libre", sans-serif;
+  font-weight: 900;
+  font-size: 60px;
+  color: #cfe6ff;
+  filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
+}
+
+.vote-bar-container {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.vote-bar {
+  display: flex;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.vote-bar-genre1 {
+  background: #ff66c4;
+  transition: width 0.5s ease;
+}
+
+.vote-bar-genre2 {
+  background: #5ce1e6;
+  transition: width 0.5s ease;
+}
+
+.vote-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Proza Libre", sans-serif;
+  margin-top: 8px;
+  color: #cfe6ff;
+  font-weight: bold;
+}
