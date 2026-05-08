@@ -105,6 +105,29 @@ body {
   background-color: #ff66c4;
 }
 
+.mood-btn {
+  padding: 25px;
+  margin: 7px auto;
+  border-radius: 50px;
+  border: none;
+  background-color: #ff66c4;
+  color: #cfe6ff;
+  font-family: "Proza Libre", sans-serif;
+  font-weight: 800;
+  font-size: larger;
+  cursor: pointer;
+  transition: transform 0.2s;
+  justify-content: center;
+  display: flex;
+  width: 250px;
+  height: 75px;
+  filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
+}
+/* skal indsættes i boks 1 */
+.mood-btn:hover {
+  transform: scale(1.05);
+  background-color: #ff66c4;
+}
 .box2 {
   width: 600px;
   height: 540px;

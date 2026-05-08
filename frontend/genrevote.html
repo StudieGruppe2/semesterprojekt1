@@ -20,20 +20,20 @@
 
         <!-- Hjerte knapper -->
         <div class="vote-container">
-          <button class="genre-btn" onclick="vote('genre1')">
+          <button class="genre-btn" id="genre1-btn">
             <img src="pinkhjerte.png" alt="genre1" />
-            <p class="p">genre1</p>
+            <p class="p" id="genre1-navn"></p>
           </button>
 
           <p class="vs">VS</p>
 
-          <button class="genre-btn" onclick="vote('genre2')">
+          <button class="genre-btn" id="genre2-btn">
             <img src="blåhjerte.png" alt="genre2" />
-            <p class="p">genre2</p>
+            <p class="p" id="genre2-navn"></p>
           </button>
         </div>
 
-        <!-- Vote bar lige under -->
+        <!-- Vote bar -->
         <div class="vote-bar-container">
           <div class="vote-bar">
             <div
@@ -53,10 +53,15 @@
           </div>
         </div>
       </div>
+      <div class="box2">
+        <h2 class="h2">Partymembers</h2>
+      </div>
     </div>
+
     <a href="index.html">
       <img class="undo" src="undoknap.png" alt="undoknap" />
     </a>
     <button id="start" class="beginbtn">Begin listening ➔</button><br />
+    <script src="script-genrevote.js" defer></script>
   </body>
 </html>
