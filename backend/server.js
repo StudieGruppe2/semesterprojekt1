@@ -14,6 +14,7 @@ server.get("/api/party/:party_id/playlist", onGetPartyInformation);
 server.post("/api/party/create/:mood/:navn", onPostPartyForUser);
 server.post("/api/party/join/:party_code/:navn", onJoinParty);
 server.post("/api/genre_vote/:genre_id/:party_id", onPostGenreVote);
+server.get("/api/party/:party_code/members", onGetPartyMembers);
 //server.post / "api/genre_vote/:genre";
 //server.post("/api/track_vote/:track_id/:party_id", onPostTrackVote);
 
@@ -202,6 +203,24 @@ async function onPostGenreVote(request, response) {
     [genre_id, party_id],
   );
   response.json({ message: "Genre stemme registreret!" });
+}
+
+// SE PARTYMEMBERS
+async function onGetPartyMembers(request, response) {
+  const party_code = request.params.party_code;
+
+  const result = await db.query(
+    `
+    SELECT pm.user_name
+    FROM partymember pm
+    JOIN party p ON p.party_id = pm.party_id
+    WHERE p.party_code = $1
+    ORDER BY pm.partymember_id
+    `,
+    [party_code],
+  );
+
+  response.json(result.rows);
 }
 
 /*

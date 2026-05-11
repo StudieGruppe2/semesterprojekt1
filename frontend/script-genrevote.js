@@ -26,3 +26,21 @@ setInterval(update, 3000); // bruges når vi skal burge ny info fra DB
 function update() {
   console.log("opdaterer..."); // henter seneste data fra DB vi vil vise
 }
+
+async function updateMembers() {
+  const response = await fetch("/api/party/" + party_code + "/members");
+  const members = await response.json();
+
+  const box = document.getElementById("party-members");
+  box.innerHTML = "";
+
+  members.forEach(function (member) {
+    const p = document.createElement("p");
+    p.className = "p";
+    p.textContent = member.user_name;
+    box.appendChild(p);
+  });
+}
+
+updateMembers();
+setInterval(updateMembers, 3000);
