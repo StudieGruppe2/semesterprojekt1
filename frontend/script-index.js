@@ -71,6 +71,13 @@ document
       method: "POST",
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.log("Serverfejl:", errorText);
+      alert("Kunne ikke joine party");
+      return;
+    }
+
     const data = await response.json();
 
     console.log(data.party_code);

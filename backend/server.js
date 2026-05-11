@@ -148,45 +148,45 @@ async function onPostPartyForUser(request, response) {
   }
 }
 
-//JOIN PARTY
 async function onJoinParty(request, response) {
-  const party_code = request.params.party_code;
-  const navn = request.params.navn;
+  try {
+    const party_code = request.params.party_code;
+    const navn = request.params.navn;
 
-  // Find party ud fra party_code
-  const partyResult = await db.query(
-    `
-        SELECT party_id, party_name, mood_type 
-        FROM party
-        join mood using (mood_id)
-        WHERE party_code = $1
-    `,
-    [party_code],
-  );
+    const partyResult = await db.query(
+      `
+      SELECT party_id, party_name, mood_type 
+      FROM party
+      JOIN mood USING (mood_id)
+      WHERE party_code = $1
+      `,
+      [party_code],
+    );
 
-  if (partyResult.rows.length === 0) {
-    return response.json({ error: "Party ikke fundet!" });
+    if (partyResult.rows.length === 0) {
+      return response.status(404).json({ error: "Party ikke fundet!" });
+    }
+
+    const userResult = await db.query(
+      `
+      INSERT INTO users (user_name, is_host)
+      VALUES ($1, false)
+      RETURNING user_id, user_name
+      `,
+      [navn],
+    );
+
+    response.json({
+      party_code: party_code,
+      party_name: partyResult.rows[0].party_name,
+      user_id: userResult.rows[0].user_id,
+      user_name: userResult.rows[0].user_name,
+      mood_type: partyResult.rows[0].mood_type,
+    });
+  } catch (error) {
+    console.log("JOIN PARTY FEJL:", error.message);
+    response.status(500).json({ error: error.message });
   }
-
-  const party_id = partyResult.rows[0].party_id;
-
-  // Gem brugeren i users tabellen
-  const userResult = await db.query(
-    `
-        INSERT INTO users (user_name, is_host)
-        VALUES ($1, false)
-        RETURNING user_id, user_name
-    `,
-    [navn],
-  );
-
-  response.json({
-    party_code: party_code,
-    party_name: partyResult.rows[0].party_name,
-    user_id: userResult.rows[0].user_id,
-    user_name: userResult.rows[0].user_name,
-    mood_type: partyResult.rows[0].mood_type,
-  });
 }
 
 // STEM PÅ GENRE

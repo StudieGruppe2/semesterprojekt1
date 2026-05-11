@@ -27,7 +27,7 @@ console.log("Creating tables...");
 // en query er en database-forespørgsel - en slags kommando man sender til databasen for at gøre noget
 await db.query(` 
     create table users (
-        user_id     bigint primary key,
+        user_id     bigint primary key generated always as identity,
         user_name   text,
         is_host     boolean
     )
