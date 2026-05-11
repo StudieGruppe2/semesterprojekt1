@@ -47,12 +47,6 @@ document
   });
 
 //join party knap
-const data = await response.json();
-
-console.log(data.party_code);
-console.log(data.party_name);
-console.log(data.user_id);
-console.log(data.user_name);
 
 document
   .getElementById("joinPartyBtn")
@@ -75,6 +69,11 @@ document
     });
 
     const data = await response.json();
+
+    console.log(data.party_code);
+    console.log(data.party_name);
+    console.log(data.user_id);
+    console.log(data.user_name);
 
     window.location.href =
       "genrevote.html?navn=" +
