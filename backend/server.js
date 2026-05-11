@@ -14,7 +14,7 @@ server.get("/api/party/:party_id/playlist", onGetPartyInformation);
 server.post("/api/party/create/:mood/:navn", onPostPartyForUser);
 server.post("/api/party/join/:party_code/:navn", onJoinParty);
 server.post("/api/genre_vote/:genre_id/:party_id", onPostGenreVote);
-server.get("/api/party/:party_code/members", onGetPartyMembers);
+server.post("/api/party/:party_code/members", onGetPartyMembers);
 //server.post / "api/genre_vote/:genre";
 //server.post("/api/track_vote/:track_id/:party_id", onPostTrackVote);
 
@@ -114,10 +114,8 @@ async function onPostPartyForUser(request, response) {
 
     const moodResult = await db.query(
       `
-      SELECT mood_id 
-      FROM mood 
-      WHERE mood_type = $1
-      `,
+      select mood_id FROM mood WHERE mood_type = $1
+    `,
       [mood],
     );
 
@@ -125,12 +123,11 @@ async function onPostPartyForUser(request, response) {
 
     const playlistResult = await db.query(
       `
-      SELECT playlist_id 
-      FROM playlist
-      JOIN genre USING (genre_id)
-      WHERE genre.mood_id = $1
-      LIMIT 1
-      `,
+      select playlist_id FROM playlist
+      join genre USING (genre_id)
+      where genre.mood_id = $1
+      limit 1
+    `,
       [mood_id],
     );
 
@@ -138,21 +135,11 @@ async function onPostPartyForUser(request, response) {
 
     const dbResult = await db.query(
       `
-      INSERT INTO party (party_name, party_code, mood_id, playlist_id)
-      VALUES ($1, $2, $3, $4)
-      RETURNING party_id, party_code, party_name
-      `,
+      insert into party (party_name, party_code, mood_id, playlist_id)
+      values ($1, $2, $3, $4)
+      returning party_code, party_name
+    `,
       [navn, Math.floor(Math.random() * 9000) + 1000, mood_id, playlist_id],
-    );
-
-    const party_id = dbResult.rows[0].party_id;
-
-    await db.query(
-      `
-      INSERT INTO partymember (party_id, user_name)
-      VALUES ($1, $2)
-      `,
-      [party_id, navn],
     );
 
     response.json(dbResult.rows[0]);
