@@ -223,13 +223,6 @@ async function onGetPartyMembers(request, response) {
   response.json(result.rows);
 }
 
-/*
-async function onPostTrackVote(request, response) {
-  console.log(request, params);
-  response.sendStatus(202);
-}
-*/
-
 function onServerReady() {
   console.log("Webserver running on port", port);
 }
