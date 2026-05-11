@@ -194,3 +194,9 @@ body {
   color: #cfe6ff;
   font-weight: bold;
 }
+.partycode-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}

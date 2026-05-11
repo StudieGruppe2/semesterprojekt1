@@ -11,7 +11,8 @@ server.use(onEachRequest);
 server.get("/api/mood/:mood_id/mood_type", onGetMoodTypeByMoodId);
 server.get("/api/party/:party_id/genre_winner", onGetGenreWinnerByGenreVote);
 server.get("/api/party/:party_id/playlist", onGetPartyInformation);
-server.post("/api/party/:navn/:mood", onPostParty);
+server.post("/api/party/:mood/:navn", onPostPartyForUser);
+server.post("/api/party/:party_code/:navn", onJoinParty);
 //server.post("/api/genre_vote/:genre_id/:party_id", onPostGenreVote);
 //server.post("/api/track_vote/:track_id/:party_id", onPostTrackVote);
 
@@ -103,13 +104,88 @@ async function onGetPartyInformation(request, response) {
   response.json(dbResult.rows);
 }
 
-async function onPostParty(request, response) {
-  //sql insert som tager info fra hvem der vil oprette party og hvilket mood
-  //skal indsættes i party tabellen og returnere party_id
-  console.log(request.params);
-  response.sendStatus(202);
+//CREATE PARTY AS HOST
+async function onPostPartyForUser(request, response) {
+  try {
+    const mood = request.params.mood;
+    const navn = request.params.navn;
+
+    const moodResult = await db.query(
+      `
+      select mood_id FROM mood WHERE mood_type = $1
+    `,
+      [mood],
+    );
+
+    const mood_id = moodResult.rows[0].mood_id;
+
+    const playlistResult = await db.query(
+      `
+      select playlist_id FROM playlist
+      join genre USING (genre_id)
+      where genre.mood_id = $1
+      limit 1
+    `,
+      [mood_id],
+    );
+
+    const playlist_id = playlistResult.rows[0].playlist_id;
+
+    const dbResult = await db.query(
+      `
+      insert into party (party_name, party_code, mood_id, playlist_id)
+      values ($1, $2, $3, $4)
+      returning party_code, party_name
+    `,
+      [navn, Math.floor(Math.random() * 9000) + 1000, mood_id, playlist_id],
+    );
+
+    response.json(dbResult.rows[0]);
+  } catch (error) {
+    console.log("fejl:", error.message);
+    response.status(500).json({ error: error.message });
+  }
 }
 
+//JOIN PARTY
+async function onJoinParty(request, response) {
+  const party_code = request.params.party_code;
+  const navn = request.params.navn;
+
+  // Find party ud fra party_code
+  const partyResult = await db.query(
+    `
+        SELECT party_id, party_name FROM party
+        WHERE party_code = $1
+    `,
+    [party_code],
+  );
+
+  if (partyResult.rows.length === 0) {
+    return response.json({ error: "Party ikke fundet!" });
+  }
+
+  const party_id = partyResult.rows[0].party_id;
+
+  // Gem brugeren i users tabellen
+  const userResult = await db.query(
+    `
+        INSERT INTO users (user_name, is_host)
+        VALUES ($1, false)
+        RETURNING user_id, user_name
+    `,
+    [navn],
+  );
+
+  response.json({
+    party_code: party_code,
+    party_name: partyResult.rows[0].party_name,
+    user_id: userResult.rows[0].user_id,
+    user_name: userResult.rows[0].user_name,
+  });
+}
+
+/*
 async function onPostGenreVote(request, response) {
   console.log(request, params);
   response.sendStatus(202);
@@ -119,6 +195,7 @@ async function onPostTrackVote(request, response) {
   console.log(request, params);
   response.sendStatus(202);
 }
+*/
 
 function onServerReady() {
   console.log("Webserver running on port", port);

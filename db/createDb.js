@@ -19,6 +19,7 @@ await db.query("drop table if exists genre cascade");
 await db.query("drop table if exists artist cascade");
 await db.query("drop table if exists mood cascade");
 await db.query("drop table if exists users cascade");
+await db.query("drop table if exists partymember cascade");
 
 // TODO: drop more tables, if they exist
 
@@ -27,7 +28,7 @@ console.log("Creating tables...");
 await db.query(` 
     create table users (
         user_id     bigint primary key,
-        user_name   text, 
+        user_name   text,
         is_host     boolean
     )
 `);
@@ -54,7 +55,6 @@ await db.query(`
     )
 `);
 
-
 await db.query(` 
     create table tracks (
       track_id      integer primary key,
@@ -73,15 +73,23 @@ await db.query(`
 
 await db.query(` 
     create table party (
-       party_id         integer primary key,
+       party_id         integer primary key generated always as identity,
        party_code       integer unique not null,
        party_name       text not null,
+       mood_id          integer not null references mood (mood_id),
        playlist_id      integer not null references playlist (playlist_id),
-       user_id          integer unique not null,
+       user_id          integer references users (user_id),
        created_at       timestamp default now()
     )
 `);
 
+await db.query(`
+    create table partymember (
+        partymember_id  integer primary key generated always as identity,
+        party_id        integer references party (party_id),
+        user_name       text not null
+    )
+`);
 await db.query(` 
     create table track_playlist (
        track_id          integer not null references tracks (track_id),
@@ -108,36 +116,50 @@ await db.query(`
     )
 `);
 
-await upload(db,'db/mood.csv', `
+await upload(
+  db,
+  "db/mood.csv",
+  `
   copy     mood(mood_id, mood_type)
   from     stdin
-  with     csv header encoding 'UTF-8'`
+  with     csv header encoding 'UTF-8'`,
 );
 
-await upload(db,'db/artist.csv', `
+await upload(
+  db,
+  "db/artist.csv",
+  `
   copy     artist(artist_id, artist_name)
   from     stdin
-  with     csv header encoding 'UTF-8'`
+  with     csv header encoding 'UTF-8'`,
 );
 
-await upload(db,'db/genre.csv', `
+await upload(
+  db,
+  "db/genre.csv",
+  `
   copy        genre(genre_id, genre_type, mood_id)
   from        stdin
-  with        csv header encoding 'UTF-8'`
+  with        csv header encoding 'UTF-8'`,
 );
 
-await upload(db,'db/tracks.csv', `
+await upload(
+  db,
+  "db/tracks.csv",
+  `
   copy       tracks(track_id, title, duration_ms, artist_id)
   from       stdin
-  with       csv header encoding 'UTF-8'`
+  with       csv header encoding 'UTF-8'`,
 );
 
-await upload(db,'db/playlist.csv', `
+await upload(
+  db,
+  "db/playlist.csv",
+  `
   copy     playlist(playlist_id, genre_id)
   from     stdin
-  with     csv header encoding 'UTF-8'`
+  with     csv header encoding 'UTF-8'`,
 );
 
-
 await db.end();
-console.log('Database successfully recreated.');
+console.log("Database successfully recreated.");

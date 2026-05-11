@@ -26,15 +26,61 @@ document
       alert("Skriv dit navn!");
       return;
     }
-    // kalde fetchData funktionen
-    await postParty(navn, valgtMood);
 
-    window.location.href = "genrevote.html?mood=" + valgtMood + "&navn=" + navn;
+    const response = await fetch("/api/party/" + valgtMood + "/" + navn, {
+      method: "POST",
+    });
+
+    const data = await response.json();
+    const party_code = data.party_code;
+    const party_name = data.party_name;
+
+    window.location.href =
+      "genrevote.html?mood=" +
+      valgtMood +
+      "&navn=" +
+      navn +
+      "&party_code=" +
+      party_code +
+      "&party_name=" +
+      party_name;
   });
 
-// HTTP metode
-async function postParty(navn, mood) {
-  const response = await fetch(`/api/party/${navn}/${mood}`, {
-    method: "POST", // man skal vælge post selv - default er get
+//join party knap
+const data = await response.json();
+
+console.log(data.party_code);
+console.log(data.party_name);
+console.log(data.user_id);
+console.log(data.user_name);
+
+document
+  .getElementById("joinPartyBtn")
+  .addEventListener("click", async function () {
+    const navn = document.querySelector(".textareaname").value;
+    const party_code = document.querySelector(".textareacode").value; // ← hent fra inputfeltet
+
+    if (navn === "") {
+      alert("Skriv dit navn!");
+      return;
+    }
+
+    if (party_code === "") {
+      alert("Indtast party kode!");
+      return;
+    }
+
+    const response = await fetch("/api/party/" + party_code + "/" + navn, {
+      method: "POST",
+    });
+
+    const data = await response.json();
+
+    window.location.href =
+      "genrevote.html?navn=" +
+      navn +
+      "&party_code=" +
+      data.party_code +
+      "&party_name=" +
+      data.party_name;
   });
-}
