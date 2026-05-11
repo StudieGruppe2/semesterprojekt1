@@ -86,5 +86,5 @@ document
       "&party_name=" +
       data.party_name +
       "&mood=" +
-      data.mood;
+      data.mood_type;
   });
