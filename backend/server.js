@@ -14,7 +14,7 @@ server.get("/api/party/:party_id/playlist", onGetPartyInformation);
 server.post("/api/party/create/:mood/:navn", onPostPartyForUser);
 server.post("/api/party/join/:party_code/:navn", onJoinParty);
 server.post("/api/genre_vote/:genre_id/:party_id", onPostGenreVote);
-server.post("/api/party/:party_code/members", onGetPartyMembers);
+server.get("/api/party/:party_code/members", onGetPartyMembers);
 //server.post / "api/genre_vote/:genre";
 //server.post("/api/track_vote/:track_id/:party_id", onPostTrackVote);
 
