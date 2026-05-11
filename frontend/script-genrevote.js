@@ -1,5 +1,4 @@
 const params = new URLSearchParams(window.location.search);
-const mood = params.get("mood");
 const navn = params.get("navn");
 const party_code = params.get("party_code");
 const party_name = params.get("party_name");
@@ -20,7 +19,8 @@ if (mood === "Dinner") {
   document.getElementById("genre1-navn").textContent = "Indie";
   document.getElementById("genre2-navn").textContent = "Classical";
 }
--setInterval(update, 3000); // bruges når vi skal burge ny info fra DB
+
+setInterval(update, 3000); // bruges når vi skal burge ny info fra DB
 
 function update() {
   console.log("opdaterer..."); // henter seneste data fra DB vi vil vise

@@ -27,9 +27,12 @@ document
       return;
     }
 
-    const response = await fetch("/api/party/" + valgtMood + "/" + navn, {
-      method: "POST",
-    });
+    const response = await fetch(
+      "/api/party/create/" + valgtMood + "/" + navn,
+      {
+        method: "POST",
+      },
+    );
 
     const data = await response.json();
     const party_code = data.party_code;
@@ -64,7 +67,7 @@ document
       return;
     }
 
-    const response = await fetch("/api/party/" + party_code + "/" + navn, {
+    const response = await fetch("/api/party/join/" + party_code + "/" + navn, {
       method: "POST",
     });
 
@@ -82,4 +85,5 @@ document
       data.party_code +
       "&party_name=" +
       data.party_name;
+    "&mood=" + data.mood;
   });

@@ -11,8 +11,8 @@ server.use(onEachRequest);
 server.get("/api/mood/:mood_id/mood_type", onGetMoodTypeByMoodId);
 server.get("/api/party/:party_id/genre_winner", onGetGenreWinnerByGenreVote);
 server.get("/api/party/:party_id/playlist", onGetPartyInformation);
-server.post("/api/party/:mood/:navn", onPostPartyForUser);
-server.post("/api/party/:party_code/:navn", onJoinParty);
+server.post("/api/party/create/:mood/:navn", onPostPartyForUser);
+server.post("/api/party/join/:party_code/:navn", onJoinParty);
 server.post("/api/genre_vote/:genre_id/:party_id", onPostGenreVote);
 //server.post / "api/genre_vote/:genre";
 //server.post("/api/track_vote/:track_id/:party_id", onPostTrackVote);
@@ -156,7 +156,7 @@ async function onJoinParty(request, response) {
   // Find party ud fra party_code
   const partyResult = await db.query(
     `
-        SELECT party_id, party_name FROM party
+        SELECT party_id, party_name, mood_type FROM party
         WHERE party_code = $1
     `,
     [party_code],
@@ -183,6 +183,7 @@ async function onJoinParty(request, response) {
     party_name: partyResult.rows[0].party_name,
     user_id: userResult.rows[0].user_id,
     user_name: userResult.rows[0].user_name,
+    mood_type: partyResult.rows[0].mood_type,
   });
 }
 
