@@ -7,16 +7,16 @@ const party_name = params.get("party_name");
 document.getElementById("party-code").textContent = party_code;
 document.getElementById("party-name").textContent = party_name;
 
-if (mood_type === "Dinner") {
+if (mood === "Dinner") {
   document.getElementById("genre1-navn").textContent = "Jazz";
   document.getElementById("genre2-navn").textContent = "Bossa Nova";
 } else if (mood === "Party") {
   document.getElementById("genre1-navn").textContent = "Pop";
   document.getElementById("genre2-navn").textContent = "House";
-} else if (mood_type === "Workout") {
+} else if (mood === "Workout") {
   document.getElementById("genre1-navn").textContent = "Rock";
   document.getElementById("genre2-navn").textContent = "Techno";
-} else if (mood_type === "Chill") {
+} else if (mood === "Chill") {
   document.getElementById("genre1-navn").textContent = "Indie";
   document.getElementById("genre2-navn").textContent = "Classical";
 }
