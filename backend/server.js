@@ -156,7 +156,9 @@ async function onJoinParty(request, response) {
   // Find party ud fra party_code
   const partyResult = await db.query(
     `
-        SELECT party_id, party_name, mood_type FROM party
+        SELECT party_id, party_name, mood_type 
+        FROM party
+        join mood using (mood_id)
         WHERE party_code = $1
     `,
     [party_code],
