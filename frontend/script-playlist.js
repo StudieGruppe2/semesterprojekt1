@@ -31,7 +31,6 @@ function startTimer(duration_ms) {
   }, 1000);
 }
 
-let timerStartet = false;
 
 async function hentPlaylist() {
   const response = await fetch("/api/party/" + party_id + "/playlist");
@@ -40,9 +39,8 @@ async function hentPlaylist() {
   console.log("party_id:", party_id);
   console.log("sange:", sange);
 
-  if (sange.length > 0 && !timerStartet) {
+  if (sange.length > 0) {
     startTimer(sange[0].duration_ms);
-    timerStartet = true;
   }
 
   const box1 = document.querySelector(".box1");
