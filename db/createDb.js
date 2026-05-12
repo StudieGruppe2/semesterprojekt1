@@ -78,7 +78,7 @@ await db.query(`
        party_name       text not null,
        mood_id          integer not null references mood (mood_id),
        playlist_id      integer not null references playlist (playlist_id),
-       user_id          integer references users (user_id),
+       user_id          bigint references users (user_id),
        created_at       timestamp default now()
     )
 `);
@@ -109,7 +109,7 @@ await db.query(`
 
 await db.query(` 
     create table genre_vote (
-        genre_vote_id         integer unique not null,
+        genre_vote_id         integer primary key generated always as identity,
         genre_id              integer not null references genre (genre_id),
         user_id               bigint references users (user_id),
         party_id              integer references party (party_id)
