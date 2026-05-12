@@ -17,6 +17,7 @@ server.post("/api/genre_vote/:genre_id/:party_id", onPostGenreVote);
 server.get("/api/party/:party_code/members", onGetPartyMembers);
 //server.post / "api/genre_vote/:genre";
 //server.post("/api/track_vote/:track_id/:party_id", onPostTrackVote);
+server.post("/api/track_vote/:track_id/:party_id/:user_id", OnPostTrackvote);
 
 server.listen(port, onServerReady);
 
@@ -230,4 +231,35 @@ function onServerReady() {
 function onEachRequest(request, response, next) {
   console.log(new Date(), request.method, request.url);
   next();
+}
+
+// stem på track
+async function onPostTrackVote(request, response) {
+  const track_id = request.params.track_id;
+  const party_id = request.params.party_id;
+  const user_id = request.params.user_id;
+
+  const checkResult = await db.query(
+    `
+    select track_vote_id FROM track_vote
+    where track_id = $1
+    and party_id = $2
+    and user_id = $3
+  `,
+    [track_id, party_id, user_id],
+  );
+
+  if (checkResult.rows.length > 0) {
+    return response.json({ error: "You have already voted fr this song" });
+  }
+
+  await db.query(
+    `
+    insert into track_vote (track_id, party_id, user_id)
+    values ($1, $2, $3)
+  `,
+    [track_id, party_id, user_id],
+  );
+
+  response.json({ message: "vote registered" });
 }

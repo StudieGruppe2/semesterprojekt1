@@ -100,7 +100,7 @@ await db.query(`
 
 await db.query(` 
     create table track_vote (
-       track_vote_id       integer unique not null,
+       track_vote_id       integer primarykey generated always as identity,
        track_id            integer not null references tracks (track_id),
        user_id             bigint unique references users (user_id),
        party_id            integer not null references party (party_id)
