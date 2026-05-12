@@ -29,6 +29,21 @@ function update() {
   console.log("opdaterer...");
 }
 
+async function updateMembers() {
+  const response = await fetch("/api/party/" + party_code + "/members");
+  const members = await response.json();
+
+  const box = document.getElementById("party-members");
+  box.innerHTML = "";
+
+  members.forEach(function (member) {
+    const p = document.createElement("p");
+    p.className = "p";
+    p.textContent = member.user_name;
+    box.appendChild(p);
+  });
+}
+
 document.getElementById("start").addEventListener("click", function () {
   window.location.href =
     "playlist.html?party_id=" + party_id + "&user_id=" + user_id;
