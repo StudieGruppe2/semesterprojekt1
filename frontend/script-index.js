@@ -45,6 +45,7 @@ document
     }
 
     const data = await response.json();
+
     console.log("SERVER SVAR:", data);
 
     window.location.href =
@@ -53,9 +54,9 @@ document
       "&navn=" +
       navn +
       "&party_code=" +
-      data.party_code +
+      party_code +
       "&party_name=" +
-      data.party_name +
+      party_name +
       "&party_id=" +
       data.party_id +
       "&user_id=" +
@@ -105,5 +106,5 @@ document
       "&party_id=" +
       data.party_id +
       "&user_id=" +
-      data.user_id; 
+      data.user_id;
   });
