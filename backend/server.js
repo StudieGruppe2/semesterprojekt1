@@ -40,7 +40,7 @@ async function onGetGenreWinnerByGenreVote(request, response) {
 
   const dbResult = await db.query(
     `
-    SELECT genre_id, COUNT(*)::int AS stemmer
+    SELECT genre_id, COUNT(*)::int AS stemmer -- :: betyder at det skal være et heltal
     FROM genre_vote
     WHERE party_id = $1
     GROUP BY genre_id
@@ -50,7 +50,7 @@ async function onGetGenreWinnerByGenreVote(request, response) {
   );
 
   if (dbResult.rows.length === 0) {
-    return response.json({ message: "Ingen stemmer endnu" });
+    return response.json({ message: "no votes yet" });
   }
 
   if (dbResult.rows.length === 1) {
@@ -201,7 +201,7 @@ async function onJoinParty(request, response) {
     );
 
     if (partyResult.rows.length === 0) {
-      return response.status(404).json({ error: "Party ikke fundet!" });
+      return response.status(404).json({ error: "Party not found" });
     }
 
     const party = partyResult.rows[0];
@@ -254,7 +254,7 @@ async function onPostGenreVote(request, response) {
       [genre_id, party_id, user_id],
     );
 
-    response.json({ message: "Genre stemme registreret!" });
+    response.json({ message: "Genre vote registered!" });
   } catch (error) {
     console.log("GENRE VOTE FEJL:", error.message);
     response.status(500).json({ error: error.message });
