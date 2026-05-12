@@ -53,9 +53,9 @@ document
       "&navn=" +
       navn +
       "&party_code=" +
-      party_code +
+      data.party_code +
       "&party_name=" +
-      party_name +
+      data.party_name +
       "&party_id=" +
       data.party_id +
       "&user_id=" +
