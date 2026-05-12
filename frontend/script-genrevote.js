@@ -25,23 +25,23 @@ let genre2_id;
 if (mood === "Dinner") {
   document.getElementById("genre1-navn").textContent = "Jazz";
   document.getElementById("genre2-navn").textContent = "Bossa Nova";
-  genre1_id = 1;
-  genre2_id = 2;
+  genre1_id = 400;
+  genre2_id = 401;
 } else if (mood === "Party") {
   document.getElementById("genre1-navn").textContent = "Pop";
   document.getElementById("genre2-navn").textContent = "House";
-  genre1_id = 3;
-  genre2_id = 4;
+  genre1_id = 402;
+  genre2_id = 403;
 } else if (mood === "Workout") {
   document.getElementById("genre1-navn").textContent = "Rock";
   document.getElementById("genre2-navn").textContent = "Techno";
-  genre1_id = 5;
-  genre2_id = 6;
+  genre1_id = 404;
+  genre2_id = 405;
 } else if (mood === "Chill") {
   document.getElementById("genre1-navn").textContent = "Indie";
   document.getElementById("genre2-navn").textContent = "Classical";
-  genre1_id = 7;
-  genre2_id = 8;
+  genre1_id = 406;
+  genre2_id = 407;
 }
 
 document

@@ -13,7 +13,6 @@ server.get("/api/party/:party_id/genre_winner", onGetGenreWinnerByGenreVote);
 server.get("/api/party/:party_id/playlist", onGetPartyInformation);
 server.get("/api/party/:party_code/members", onGetPartyMembers);
 server.get("/api/genre_vote/:party_id", onGetGenreVotes);
-
 server.post("/api/party/create/:mood/:navn", onPostPartyForUser);
 server.post("/api/party/join/:party_code/:navn", onJoinParty);
 server.post("/api/genre_vote/:genre_id/:party_id", onPostGenreVote);

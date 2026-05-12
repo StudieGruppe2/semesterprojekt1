@@ -103,7 +103,7 @@ await db.query(`
        track_vote_id       integer primary key generated always as identity,
        track_id            integer not null references tracks (track_id),
        user_id             bigint unique references users (user_id),
-       party_id            integer not null references party (party_id)
+       party_id            integer references party (party_id)
     )
 `);
 
