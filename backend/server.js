@@ -165,20 +165,14 @@ async function onPostPartyForUser(request, response) {
       [party_id, user_id],
     );
     
-    response.json({
-  party_id: dbResult.rows[0].party_id,
-  party_code: dbResult.rows[0].party_code,
-  party_name: dbResult.rows[0].party_name,
-  user_id: user_id 
-
-   /* response.json({
+      response.json({
       party_id: party_id,
       party_code: partyResult.rows[0].party_code,
       party_name: partyResult.rows[0].party_name,
-      user_id: user_id,
       user_name: userResult.rows[0].user_name,
       mood_type: mood,
-     */ 
+      user_id: user_id,
+    
     
     });
   } catch (error) {
