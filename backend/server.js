@@ -172,6 +172,7 @@ async function onPostPartyForUser(request, response) {
       party_name: partyResult.rows[0].party_name,
       user_id: user_id,
       user_name: userResult.rows[0].user_name,
+      mood_type: mood,
     });
   } catch (error) {
     console.log("CREATE PARTY FEJL:", error.message);

@@ -3,6 +3,7 @@ let valgtMood = "";
 
 // Mood knapper
 const moodButtons = document.querySelectorAll(".mood-btn");
+
 moodButtons.forEach(function (button) {
   button.addEventListener("click", function () {
     valgtMood = button.id;
@@ -15,44 +16,58 @@ moodButtons.forEach(function (button) {
 function closePopup() {
   popup.style.display = "none";
 }
+
 document.querySelector(".close-btn").addEventListener("click", closePopup);
 
 // Create party knap
-const response = await fetch("/api/party/create/" + valgtMood + "/" + navn, {
-  method: "POST",
-});
+document
+  .getElementById("createPartyBtn")
+  .addEventListener("click", async function () {
+    const navn = document.querySelector(".textareaname1").value;
 
-if (!response.ok) {
-  const errorText = await response.text();
-  console.log("CREATE FEJL:", errorText);
-  alert("Kunne ikke oprette party");
-  return;
-}
+    if (navn === "") {
+      alert("Skriv dit navn!");
+      return;
+    }
 
-const data = await response.json();
-console.log("SERVER SVAR:", data);
+    const response = await fetch(
+      "/api/party/create/" + valgtMood + "/" + navn,
+      {
+        method: "POST",
+      },
+    );
 
-window.location.href =
-  "genrevote.html?mood=" +
-  valgtMood +
-  "&navn=" +
-  navn +
-  "&party_id=" +
-  data.party_id +
-  "&user_id=" +
-  data.user_id +
-  "&party_code=" +
-  data.party_code +
-  "&party_name=" +
-  data.party_name;
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.log("CREATE FEJL:", errorText);
+      alert("Kunne ikke oprette party");
+      return;
+    }
 
-//join party knap
+    const data = await response.json();
+    console.log("SERVER SVAR:", data);
 
+    window.location.href =
+      "genrevote.html?mood=" +
+      data.mood_type +
+      "&navn=" +
+      navn +
+      "&party_id=" +
+      data.party_id +
+      "&user_id=" +
+      data.user_id +
+      "&party_code=" +
+      data.party_code +
+      "&party_name=" +
+      data.party_name;
+  });
+
+// Join party knap
 document
   .getElementById("joinPartyBtn")
   .addEventListener("click", async function () {
     const navn = document.querySelector(".textareaname").value;
-    const party_code = document.querySelector(".textareacode").value; // ← hent fra inputfeltet
+    const party_code = document.querySelector(".textareacode").value;
 
     if (navn === "") {
       alert("Skriv dit navn!");
@@ -70,17 +85,13 @@ document
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.log("Serverfejl:", errorText);
+      console.log("JOIN FEJL:", errorText);
       alert("Kunne ikke joine party");
       return;
     }
 
     const data = await response.json();
-
-    console.log(data.party_code);
-    console.log(data.party_name);
-    console.log(data.user_id);
-    console.log(data.user_name);
+    console.log("JOIN SERVER SVAR:", data);
 
     window.location.href =
       "genrevote.html?navn=" +
