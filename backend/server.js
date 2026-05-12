@@ -12,7 +12,7 @@ server.get("/api/party/:party_id/genre_winner", onGetGenreWinnerByGenreVote);
 server.get("/api/party/:party_id/playlist", onGetPartyInformation);
 server.post("/api/party/create/:mood/:navn", onPostPartyForUser);
 server.post("/api/party/join/:party_code/:navn", onJoinParty);
-server.post("/api/genre_vote/:genre_id/:party_id/:user_id", onPostGenreVote);
+server.post("/api/genre_vote/:genre_id/:party_id", onPostGenreVote);
 server.get("/api/party/:party_code/members", onGetPartyMembers);
 
 server.listen(port, onServerReady);
@@ -110,9 +110,9 @@ async function onPostPartyForUser(request, response) {
 
     // ← DETTE MANGLEDE: gem hosten i partymember
     await db.query(
-      `INSERT INTO partymember (party_id, user_id)
+      `INSERT INTO partymember (party_id, user_name)
        VALUES ($1, $2)`,
-      [party_id, user_id],
+      [party_id, navn],
     );
 
     response.json(dbResult.rows[0]);
@@ -151,12 +151,13 @@ async function onJoinParty(request, response) {
 
     // gem brugeren i partymember
     await db.query(
-      `INSERT INTO partymember (party_id, user_id)
+      `INSERT INTO partymember (party_id, user_name)
        VALUES ($1, $2)`,
-      [party_id, user_id],
+      [party_id, navn],
     );
 
     response.json({
+   
       party_code: party_code,
       party_name: partyResult.rows[0].party_name,
       user_id: userResult.rows[0].user_id,
@@ -169,59 +170,26 @@ async function onJoinParty(request, response) {
   }
 }
 
+
+
 // STEM PÅ GENRE
 async function onPostGenreVote(request, response) {
-  try {
-    const genre_id = request.params.genre_id;
-    const party_id = request.params.party_id;
-    const user_id = request.params.user_id;
-
-    const memberCheck = await db.query(
-      `SELECT pm.partymember_id
-     FROM partymember
-     WHERE party_id = $1 AND user_id = $2`,
-      [party_id, user_id],
-    );
-
-    if (memberCheck.rows.length === 0) {
-      return response
-        .status(403)
-        .json({ error: "Du er ikke medlem af denne party!" });
-    }
-
-    const existingVote = await db.query(
-      `SELECT genre_vote_id
-     FROM genre_vote
-     WHERE party_id = $1 AND user_id = $2`,
-      [party_id, user_id],
-    );
-
-    if (existingVote.rows.length > 0) {
-      return response
-        .status(400)
-        .json({ error: "Du har allerede stemt på en genre!" });
-    }
-
-    await db.query(
-      `INSERT INTO genre_vote (genre_id, party_id, user_id) 
-    VALUES ($1, $2 , $3)`,
-      [genre_id, party_id, user_id],
-    );
-    response.json({ message: "Stemme registreret!" });
-  } catch (error) {
-    console.log("GENRE VOTE FEJL:", error.message);
-    response.status(500).json({ error: error.message });
-  }
+  const genre_id = request.params.genre_id;
+  const party_id = request.params.party_id;
+  await db.query(
+    `INSERT INTO genre_vote (genre_id, party_id) VALUES ($1, $2)`,
+    [genre_id, party_id],
+  );
+  response.json({ message: "Genre stemme registreret!" });
 }
 
 // SE PARTYMEMBERS
 async function onGetPartyMembers(request, response) {
   const party_code = request.params.party_code;
   const result = await db.query(
-    `SELECT u.user_name
+    `SELECT pm.user_name
      FROM partymember pm
      JOIN party p ON p.party_id = pm.party_id
-     JOIN usesr u ON u.user_id = pm.user_id
      WHERE p.party_code = $1
      ORDER BY pm.partymember_id`,
     [party_code],
