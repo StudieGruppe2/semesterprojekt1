@@ -31,15 +31,18 @@ function startTimer(duration_ms) {
   }, 1000);
 }
 
+let nuværendeSang = null;
+
 async function hentPlaylist() {
   const response = await fetch("/api/party/" + party_id + "/playlist");
   const sange = await response.json();
 
-  console.log("party_id:", party_id); // ← tilføj denne
-  console.log("sange:", sange); // ← tilføj denne
+  console.log("party_id:", party_id);
+  console.log("sange:", sange);
 
   if (sange.length > 0) {
     startTimer(sange[0].duration_ms);
+    nuværendeSang = sange[0];
   }
 
   const box1 = document.querySelector(".box1");
