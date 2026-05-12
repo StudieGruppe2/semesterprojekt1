@@ -49,17 +49,17 @@ document
 
     window.location.href =
       "genrevote.html?mood=" +
-      data.mood_type +
+      valgtMood +
       "&navn=" +
       navn +
+      "&party_code=" +
+      party_code +
+      "&party_name=" +
+      party_name +
       "&party_id=" +
       data.party_id +
       "&user_id=" +
-      data.user_id +
-      "&party_code=" +
-      data.party_code +
-      "&party_name=" +
-      data.party_name;
+      data.user_id;
   });
 
 // Join party knap
@@ -96,14 +96,14 @@ document
     window.location.href =
       "genrevote.html?navn=" +
       navn +
-      "&party_id=" +
-      data.party_id +
-      "&user_id=" +
-      data.user_id +
       "&party_code=" +
       data.party_code +
       "&party_name=" +
       data.party_name +
       "&mood=" +
-      data.mood_type;
+      data.mood_type +
+      "&party_id=" +
+      data.party_id +
+      "&user_id=" +
+      data.user_id; 
   });

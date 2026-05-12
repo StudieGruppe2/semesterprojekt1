@@ -15,7 +15,7 @@ server.get("/api/party/:party_code/members", onGetPartyMembers);
 server.get("/api/genre_vote/:party_id", onGetGenreVotes);
 server.post("/api/party/create/:mood/:navn", onPostPartyForUser);
 server.post("/api/party/join/:party_code/:navn", onJoinParty);
-server.post("/api/genre_vote/:genre_id/:party_id", onPostGenreVote);
+server.post("/api/genre_vote/:genre_id/:party_id/:user_id", onPostGenreVote);
 
 server.listen(port, onServerReady);
 
@@ -164,14 +164,22 @@ async function onPostPartyForUser(request, response) {
       `,
       [party_id, user_id],
     );
-
+    
     response.json({
+  party_id: dbResult.rows[0].party_id,
+  party_code: dbResult.rows[0].party_code,
+  party_name: dbResult.rows[0].party_name,
+  user_id: user_id 
+
+   /* response.json({
       party_id: party_id,
       party_code: partyResult.rows[0].party_code,
       party_name: partyResult.rows[0].party_name,
       user_id: user_id,
       user_name: userResult.rows[0].user_name,
       mood_type: mood,
+     */ 
+    
     });
   } catch (error) {
     console.log("CREATE PARTY FEJL:", error.message);
@@ -239,19 +247,22 @@ async function onJoinParty(request, response) {
 }
 
 // STEM PÅ GENRE
-// STEM PÅ GENRE
 async function onPostGenreVote(request, response) {
   try {
     const genre_id = request.params.genre_id;
     const party_id = request.params.party_id;
+    const user_id = request.params.user_id;
 
     await db.query(
       `
-      INSERT INTO genre_vote (genre_id, party_id)
-      VALUES ($1, $2)
+      INSERT INTO genre_vote (genre_id, party_id, user_id)
+      VALUES ($1, $2, $3)
       `,
-      [genre_id, party_id],
+      [genre_id, party_id, user_id],
     );
+    if (user_id){
+
+    }
 
     response.json({ message: "Genre stemme registreret!" });
   } catch (error) {
