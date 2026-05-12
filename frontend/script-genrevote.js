@@ -48,6 +48,3 @@ document.getElementById("start").addEventListener("click", function () {
   window.location.href =
     "playlist.html?party_id=" + party_id + "&user_id=" + user_id;
 });
-
-updateMembers();
-setInterval(updateMembers, 3000);
