@@ -12,7 +12,7 @@ server.get("/api/party/:party_id/genre_winner", onGetGenreWinnerByGenreVote);
 server.get("/api/party/:party_id/playlist", onGetPartyInformation);
 server.post("/api/party/create/:mood/:navn", onPostPartyForUser);
 server.post("/api/party/join/:party_code/:navn", onJoinParty);
-server.post("/api/genre_vote/:genre_id/:party_id", onPostGenreVote);
+server.post("/api/genre_vote/:genre_id/:party_id/:user_i", onPostGenreVote);
 server.get("/api/party/:party_code/members", onGetPartyMembers);
 
 server.listen(port, onServerReady);
@@ -110,7 +110,7 @@ async function onPostPartyForUser(request, response) {
 
     // ← DETTE MANGLEDE: gem hosten i partymember
     await db.query(
-      `INSERT INTO partymember (party_id, user_name)
+      `INSERT INTO partymember (party_id, user_id)
        VALUES ($1, $2)`,
       [party_id, navn],
     );
@@ -149,11 +149,11 @@ async function onJoinParty(request, response) {
       [navn],
     );
 
-    // ← DETTE MANGLEDE: gem brugeren i partymember
+    // gem brugeren i partymember
     await db.query(
-      `INSERT INTO partymember (party_id, user_name)
+      `INSERT INTO partymember (party_id, user_id)
        VALUES ($1, $2)`,
-      [party_id, navn],
+      [party_id, user_id],
     );
 
     response.json({
@@ -184,9 +184,10 @@ async function onPostGenreVote(request, response) {
 async function onGetPartyMembers(request, response) {
   const party_code = request.params.party_code;
   const result = await db.query(
-    `SELECT pm.user_name
+    `SELECT u.user_name
      FROM partymember pm
      JOIN party p ON p.party_id = pm.party_id
+     JOIN usesr u ON u.user_id = pm.user_id
      WHERE p.party_code = $1
      ORDER BY pm.partymember_id`,
     [party_code],
