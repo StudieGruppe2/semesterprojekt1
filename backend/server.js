@@ -16,6 +16,7 @@ server.get("/api/genre_vote/:party_id", onGetGenreVotes);
 server.post("/api/party/create/:mood/:navn", onPostPartyForUser);
 server.post("/api/party/join/:party_code/:navn", onJoinParty);
 server.post("/api/genre_vote/:genre_id/:party_id/:user_id", onPostGenreVote);
+server.post("/api/track_vote/:track_id/:party_id/:user_id", onPostTrackVote);
 
 server.listen(port, onServerReady);
 
@@ -164,16 +165,14 @@ async function onPostPartyForUser(request, response) {
       `,
       [party_id, user_id],
     );
-    
-      response.json({
+
+    response.json({
       party_id: party_id,
       party_code: partyResult.rows[0].party_code,
       party_name: partyResult.rows[0].party_name,
       user_name: userResult.rows[0].user_name,
       mood_type: mood,
       user_id: user_id,
-    
-    
     });
   } catch (error) {
     console.log("CREATE PARTY FEJL:", error.message);
@@ -251,12 +250,9 @@ async function onPostGenreVote(request, response) {
       `
       INSERT INTO genre_vote (genre_id, party_id, user_id)
       VALUES ($1, $2, $3)
-      `,
+    `,
       [genre_id, party_id, user_id],
     );
-    if (user_id){
-
-    }
 
     response.json({ message: "Genre stemme registreret!" });
   } catch (error) {
@@ -298,6 +294,37 @@ async function onGetPartyMembers(request, response) {
   );
 
   response.json(result.rows);
+}
+
+// stem på track
+async function onPostTrackVote(request, response) {
+  const track_id = request.params.track_id;
+  const party_id = request.params.party_id;
+  const user_id = request.params.user_id;
+
+  const checkResult = await db.query(
+    `
+    select track_vote_id FROM track_vote
+    where track_id = $1
+    and party_id = $2
+    and user_id = $3
+  `,
+    [track_id, party_id, user_id],
+  );
+
+  if (checkResult.rows.length > 0) {
+    return response.json({ error: "You have already voted fr this song" });
+  }
+
+  await db.query(
+    `
+    insert into track_vote (track_id, party_id, user_id)
+    values ($1, $2, $3)
+  `,
+    [track_id, party_id, user_id],
+  );
+
+  response.json({ message: "vote registered" });
 }
 
 function onServerReady() {
