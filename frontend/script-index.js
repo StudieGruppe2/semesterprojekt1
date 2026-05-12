@@ -18,38 +18,33 @@ function closePopup() {
 document.querySelector(".close-btn").addEventListener("click", closePopup);
 
 // Create party knap
-document
-  .getElementById("createPartyBtn")
-  .addEventListener("click", async function () {
-    const navn = document.querySelector(".textareaname1").value;
+const response = await fetch("/api/party/create/" + valgtMood + "/" + navn, {
+  method: "POST",
+});
 
-    if (navn === "") {
-      alert("Skriv dit navn!");
-      return;
-    }
+if (!response.ok) {
+  const errorText = await response.text();
+  console.log("CREATE FEJL:", errorText);
+  alert("Kunne ikke oprette party");
+  return;
+}
 
-    const response = await fetch(
-      "/api/party/create/" + valgtMood + "/" + navn,
-      {
-        method: "POST",
-      },
-    );
+const data = await response.json();
+console.log("SERVER SVAR:", data);
 
-    const data = await response.json();
-    console.log("SERVER SVAR:", data); // ← tilføj denne
-    const party_code = data.party_code;
-    const party_name = data.party_name;
-
-    window.location.href =
-      "genrevote.html?mood=" +
-      valgtMood +
-      "&navn=" +
-      navn +
-      "&party_code=" +
-      party_code +
-      "&party_name=" +
-      party_name;
-  });
+window.location.href =
+  "genrevote.html?mood=" +
+  valgtMood +
+  "&navn=" +
+  navn +
+  "&party_id=" +
+  data.party_id +
+  "&user_id=" +
+  data.user_id +
+  "&party_code=" +
+  data.party_code +
+  "&party_name=" +
+  data.party_name;
 
 //join party knap
 
@@ -90,6 +85,10 @@ document
     window.location.href =
       "genrevote.html?navn=" +
       navn +
+      "&party_id=" +
+      data.party_id +
+      "&user_id=" +
+      data.user_id +
       "&party_code=" +
       data.party_code +
       "&party_name=" +
