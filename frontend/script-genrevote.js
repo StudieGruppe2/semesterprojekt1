@@ -57,16 +57,19 @@ document
   });
 
 async function voteGenre(genre_id) {
-  const response = await fetch(
-    "/api/genre_vote/" + genre_id + "/" + party_id + "/" + user_id,
-    {
-      method: "POST",
-    },
-  );
+  if (!party_id) {
+    alert("Mangler party_id");
+    return;
+  }
+
+  const response = await fetch("/api/genre_vote/" + genre_id + "/" + party_id, {
+    method: "POST",
+  });
 
   if (!response.ok) {
-    const error = await response.json();
-    alert(error.error);
+    const errorText = await response.text();
+    console.log("VOTE FEJL:", errorText);
+    alert("Kunne ikke stemme");
     return;
   }
 

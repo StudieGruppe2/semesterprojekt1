@@ -15,7 +15,7 @@ server.get("/api/party/:party_code/members", onGetPartyMembers);
 server.get("/api/genre_vote/:party_id", onGetGenreVotes);
 server.post("/api/party/create/:mood/:navn", onPostPartyForUser);
 server.post("/api/party/join/:party_code/:navn", onJoinParty);
-server.post("/api/genre_vote/:genre_id/:party_id/:user_id", onPostGenreVote);
+server.post("/api/genre_vote/:genre_id/:party_id", onPostGenreVote);
 
 server.listen(port, onServerReady);
 
@@ -239,34 +239,26 @@ async function onJoinParty(request, response) {
 }
 
 // STEM PÅ GENRE
+// STEM PÅ GENRE
 async function onPostGenreVote(request, response) {
   try {
     const genre_id = request.params.genre_id;
     const party_id = request.params.party_id;
-    const user_id = request.params.user_id;
 
     await db.query(
       `
-      INSERT INTO genre_vote (genre_id, party_id, user_id)
-      VALUES ($1, $2, $3)
+      INSERT INTO genre_vote (genre_id, party_id)
+      VALUES ($1, $2)
       `,
-      [genre_id, party_id, user_id],
+      [genre_id, party_id],
     );
 
     response.json({ message: "Genre stemme registreret!" });
   } catch (error) {
     console.log("GENRE VOTE FEJL:", error.message);
-
-    if (error.code === "23505") {
-      return response.status(400).json({
-        error: "Du har allerede stemt",
-      });
-    }
-
     response.status(500).json({ error: error.message });
   }
 }
-
 // HENT GENRE-STEMMER
 async function onGetGenreVotes(request, response) {
   const party_id = request.params.party_id;
