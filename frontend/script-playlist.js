@@ -84,10 +84,3 @@ async function stemPaaSang(track_id) {
 
 hentPlaylist();
 setInterval(hentPlaylist, 3000);
-
-// skal i genre siden - HUSK
-
-document.getElementById("start").addEventListener("click", function () {
-  window.location.href =
-    "playlist.html?party_id=" + party_id + "&user_id=" + user_id;
-});

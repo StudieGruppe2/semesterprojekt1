@@ -12,6 +12,9 @@ moodButtons.forEach(function (button) {
 });
 
 // Luk popup
+function closePopup() {
+  popup.style.display = "none";
+}
 document.querySelector(".close-btn").addEventListener("click", closePopup);
 
 // Create party knap
@@ -33,6 +36,7 @@ document
     );
 
     const data = await response.json();
+    console.log("SERVER SVAR:", data); // ← tilføj denne
     const party_code = data.party_code;
     const party_name = data.party_name;
 
