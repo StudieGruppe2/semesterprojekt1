@@ -171,14 +171,44 @@ async function onJoinParty(request, response) {
 
 // STEM PÅ GENRE
 async function onPostGenreVote(request, response) {
+  try {
   const genre_id = request.params.genre_id;
   const party_id = request.params.party_id;
-  await db.query(
-    `INSERT INTO genre_vote (genre_id, party_id) VALUES ($1, $2)`,
-    [genre_id, party_id],
+  const user_name = request.params.user_name;
+
+  const memberCheck = await db.query(
+    `SELECT pm.partymember_id
+     FROM partymember
+     WHERE party_id = $1 AND user_name = $2`,
+    [party_id, user_name],
   );
-  response.json({ message: "Genre stemme registreret!" });
-}
+
+  if (memberCheck.rows.length === 0) {
+    return response.status(403).json({ error: "Du er ikke medlem af denne party!" });
+  }
+
+  const existingVote = await db.query(
+    `SELECT genre_vote_id
+     FROM genre_vote
+     WHERE party_id = $1 AND user_name = $2`,
+    [party_id, user_name],
+  );
+
+  if (existingVote.rows.length > 0) {
+    return response.status(400).json({ error: "Du har allerede stemt på en genre!" });
+  }
+
+  await db.query(
+    `INSERT INTO genre_vote (genre_id, party_id, user_name) 
+    VALUES ($1, $2 , $3)`,
+    [genre_id, party_id, user_name],
+  );
+     response.json({ message: "Stemme registreret!" });
+  } catch (error) {
+    console.log("GENRE VOTE FEJL:", error.message);
+    response.status(500).json({ error: error.message });
+  } 
+} 
 
 // SE PARTYMEMBERS
 async function onGetPartyMembers(request, response) {

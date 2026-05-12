@@ -87,7 +87,7 @@ await db.query(`
     create table partymember (
         partymember_id  integer primary key generated always as identity,
         party_id        integer references party (party_id),
-        user_id         bigint references users (user_id),
+        user_id         bigint references users (user_id)
     )
 `);
 await db.query(` 
