@@ -35,6 +35,9 @@ async function hentPlaylist() {
   const response = await fetch("/api/party/" + party_id + "/playlist");
   const sange = await response.json();
 
+  console.log("party_id:", party_id); // ← tilføj denne
+  console.log("sange:", sange); // ← tilføj denne
+
   if (sange.length > 0) {
     startTimer(sange[0].duration_ms);
   }
