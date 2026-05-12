@@ -87,6 +87,3 @@ async function stemPaaSang(track_id) {
     hentPlaylist();
   }
 }
-
-hentPlaylist();
-setInterval(hentPlaylist, 3000);
