@@ -62,7 +62,7 @@ async function voteGenre(genre_id) {
     return;
   }
 
-  const response = await fetch("/api/genre_vote/" + genre_id + "/" + party_id + "/" + user_id, {
+  const response = await fetch("/api/genre_vote/" + genre_id + "/" + party_id, + "/" + user_id ,{
     method: "POST",
   });
 
