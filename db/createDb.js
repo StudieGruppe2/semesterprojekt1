@@ -109,7 +109,7 @@ await db.query(`
 
 await db.query(` 
     create table genre_vote (
-        genre_vote_id         integer primary key generated always as identity,
+        genre_vote_id         integer unique not null,
         genre_id              integer not null references genre (genre_id),
         user_id               bigint references users (user_id),
         party_id              integer references party (party_id)

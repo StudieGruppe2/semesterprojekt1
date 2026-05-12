@@ -3,6 +3,8 @@ const mood = params.get("mood");
 const navn = params.get("navn");
 const party_code = params.get("party_code");
 const party_name = params.get("party_name");
+const party_id = params.get("party_id");
+const user_id = params.get("user_id");
 
 document.getElementById("party-code").textContent = party_code;
 document.getElementById("party-name").textContent = party_name;
