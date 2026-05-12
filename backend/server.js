@@ -20,9 +20,7 @@ server.listen(port, onServerReady);
 async function onGetMoodTypeByMoodId(request, response) {
   const mood_id = request.params.mood_id;
   const dbResult = await db.query(
-    `SELECT mood_type mt 
-    FROM mood m WHERE 
-    mood_id = $1`,
+    `SELECT mood_type mt FROM mood m WHERE mood_id = $1`,
     [mood_id],
   );
   response.json(dbResult.rows);
@@ -44,8 +42,7 @@ async function onGetGenreWinnerByGenreVote(request, response) {
       `SELECT genre_id FROM genre WHERE mood_id = $1`,
       [party_id],
     );
-    const tilfældig =
-      genres.rows[Math.floor(Math.random() * genres.rows.length)];
+    const tilfældig = genres.rows[Math.floor(Math.random() * genres.rows.length)];
     return response.json(tilfældig);
   }
   if (dbResult.rows.length === 1) return response.json(dbResult.rows[0]);
@@ -102,11 +99,11 @@ async function onPostPartyForUser(request, response) {
     const dbResult = await db.query(
       `INSERT INTO party (party_name, party_code, mood_id, playlist_id)
        VALUES ($1, $2, $3, $4)
-       RETURNING party_id, party_code, party_name`, // ← party_id tilføjet
+       RETURNING party_id, party_code, party_name`,  // ← party_id tilføjet
       [navn, Math.floor(Math.random() * 9000) + 1000, mood_id, playlist_id],
     );
 
-    const party_id = dbResult.rows[0].party_id; // ← gem party_id
+    const party_id = dbResult.rows[0].party_id;  // ← gem party_id
 
     // ← DETTE MANGLEDE: gem hosten i partymember
     await db.query(
@@ -140,7 +137,7 @@ async function onJoinParty(request, response) {
       return response.status(404).json({ error: "Party ikke fundet!" });
     }
 
-    const party_id = partyResult.rows[0].party_id; // ← gem party_id
+    const party_id = partyResult.rows[0].party_id;  // ← gem party_id
 
     const userResult = await db.query(
       `INSERT INTO users (user_name, is_host)
@@ -149,7 +146,7 @@ async function onJoinParty(request, response) {
       [navn],
     );
 
-    // gem brugeren i partymember
+    // ← DETTE MANGLEDE: gem brugeren i partymember
     await db.query(
       `INSERT INTO partymember (party_id, user_name)
        VALUES ($1, $2)`,
@@ -157,7 +154,6 @@ async function onJoinParty(request, response) {
     );
 
     response.json({
-   
       party_code: party_code,
       party_name: partyResult.rows[0].party_name,
       user_id: userResult.rows[0].user_id,
@@ -169,8 +165,6 @@ async function onJoinParty(request, response) {
     response.status(500).json({ error: error.message });
   }
 }
-
-
 
 // STEM PÅ GENRE
 async function onPostGenreVote(request, response) {
