@@ -12,9 +12,7 @@ moodButtons.forEach(function (button) {
 });
 
 // Luk popup
-function closePopup() {
-  popup.style.display = "none";
-}
+document.querySelector(".close-btn").addEventListener("click", closePopup);
 
 // Create party knap
 document
