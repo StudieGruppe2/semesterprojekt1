@@ -16,7 +16,6 @@ moodButtons.forEach(function (button) {
 function closePopup() {
   popup.style.display = "none";
 }
-
 document.querySelector(".close-btn").addEventListener("click", closePopup);
 
 // Create party knap

@@ -167,7 +167,7 @@ body {
 }
 
 .box3 {
-  width: 250px;
+  width: 19%;
   height: 350px;
   background: #f7c9df;
   border-radius: 30px;
@@ -195,7 +195,7 @@ body {
 }
 
 .textareaname1 {
-  width: 225px;
+  width: 85%;
   height: 50px;
   border: 1px solid #cfe6ff;
   border-radius: 10px;
