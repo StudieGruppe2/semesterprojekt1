@@ -42,7 +42,10 @@ body {
   border-radius: 30px;
   box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.55);
   padding: 45px 55px;
+  max-height: 500px;        /* triggers the scrollbar when content overflows */
+  overflow-y: auto;         /* shows scrollbar on the right when needed */
 }
+
 
 .row {
   display: grid;
