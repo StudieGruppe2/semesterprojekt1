@@ -129,7 +129,7 @@ body {
   background-color: #ff66c4;
 }
 .box2 {
-  width: 600px;
+  width: 47%;
   height: 540px;
   background: #473dc6;
   border-radius: 30px;
@@ -137,7 +137,7 @@ body {
 }
 
 .textareaname {
-  width: 550px;
+  width: 90%;
   height: 50px;
   border: 1px solid #cfe6ff;
   border-radius: 10px;
@@ -152,7 +152,7 @@ body {
 }
 
 .textareacode {
-  width: 550px;
+  width: 90%;
   height: 50px;
   border: 1px solid #cfe6ff;
   border-radius: 10px;
