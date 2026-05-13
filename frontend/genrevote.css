@@ -1,22 +1,17 @@
 body {
   background: linear-gradient(to right, #cdffd8, #94b9ff);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 2%;
 }
-
 .h1 {
   text-align: center;
   font-family: "Proza Libre", sans-serif;
   font-weight: 900;
-  font-size: clamp(40px, 6vw, 100px);
-  letter-spacing: clamp(5px, 1.5vw, 20px);
-  margin-top: 0;
+  font-style: bold;
+  font-size: 100px;
+  margin-top: 0%;
+  letter-spacing: 20px;
   margin-bottom: 2%;
+  margin-top: 0%;
+  padding-top: 0%;
   background: linear-gradient(to right, #000000, #3533cd);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -28,9 +23,10 @@ body {
   font-family: "Proza Libre", sans-serif;
   color: #cfe6ff;
   font-weight: 900;
+  font-style: bold;
   margin-bottom: 5%;
-  margin-top: 0;
-  font-size: clamp(18px, 2.5vw, 30px);
+  margin-top: 0%;
+  font-size: 30px;
   filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
 }
 
@@ -39,7 +35,8 @@ body {
   color: #cfe6ff;
   font-family: "Proza Libre", sans-serif;
   font-weight: 900;
-  font-size: clamp(20px, 3vw, 50px);
+  font-style: bold;
+  font-size: 50px;
   margin-bottom: 1%;
   margin-left: 3%;
 }
@@ -48,26 +45,26 @@ body {
   color: #cfe6ff;
   font-family: "Proza Libre", sans-serif;
   font-weight: 700;
+  font-style: normal;
   text-align: center;
-  font-size: clamp(14px, 2vw, 25px);
+  font-size: 25px;
 }
 
 .container {
   display: flex;
-  gap: 3%;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
+  gap: 3.47%;
+  justify-content: center; /* centrer vandret */
+  align-items: stretch; /* sørger for højden på boksne strækker sig så de lige høje */
 }
 
 .box1 {
-  width: 45%;
-  max-width: 650px;
-  min-width: 300px;
+  width: 45.1%;
+  height: 25.694%;
   background: #473dc6;
   border-radius: 30px;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 1);
-  padding: 5% 8% 10% 8%;
+  padding: 30px 80px 90px 80px;
+  margin-bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,13 +73,13 @@ body {
 }
 
 .box2 {
-  width: 35%;
-  max-width: 400px;
-  min-width: 280px;
+  width: 27.7%;
+  height: 25.694%;
   background: #473dc6;
   border-radius: 30px;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 1);
-  padding: 5% 8% 10% 8%;
+  padding: 30px 80px 90px 80px;
+  margin-bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -94,8 +91,8 @@ body {
   position: fixed;
   bottom: 20px;
   left: 20px;
-  width: 100px;
-  height: 100px;
+  width: 6.94%;
+  height: 6, 94%;
   filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
 }
 
@@ -108,15 +105,16 @@ body {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  padding: 25px;
   border-radius: 50px;
   border: none;
   background-color: #ff66c4;
   color: #cfe6ff;
-  width: clamp(150px, 15vw, 250px);
-  height: 75px;
+  width: 17.36%;
+  height: 5.2%;
   font-family: "Proza Libre", sans-serif;
   font-weight: 800;
-  font-size: clamp(14px, 1.5vw, 18px);
+  font-size: larger;
   cursor: pointer;
   transition: transform 0.2s;
   filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
@@ -131,7 +129,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: 1.3%;
   width: 100%;
   margin-top: 20px;
 }
@@ -147,8 +145,8 @@ body {
 }
 
 .genre-btn img {
-  width: clamp(60px, 8vw, 100px);
-  height: clamp(50px, 6vw, 80px);
+  width: 6.94%;
+  height: 5.5%;
   border-radius: 10px;
   filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
 }
@@ -161,7 +159,7 @@ body {
 .vs {
   font-family: "Proza Libre", sans-serif;
   font-weight: 900;
-  font-size: clamp(30px, 5vw, 60px);
+  font-size: 60px;
   color: #cfe6ff;
   filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
 }
@@ -173,7 +171,7 @@ body {
 
 .vote-bar {
   display: flex;
-  height: 20px;
+  height: 1.3%;
   border-radius: 10px;
   overflow: hidden;
 }
@@ -192,14 +190,12 @@ body {
   display: flex;
   justify-content: space-between;
   font-family: "Proza Libre", sans-serif;
-  margin-top: 8px;
+  margin-top: 0, 5%;
   color: #cfe6ff;
   font-weight: bold;
 }
-
 .partycode-wrapper {
   display: flex;
-  gap: 8px;
+  gap: 0.5%;
   align-items: center;
-  justify-content: center;
 }
