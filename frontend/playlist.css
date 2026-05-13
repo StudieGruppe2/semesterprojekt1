@@ -74,8 +74,8 @@ body {
 }
 
 .like-btn img {
-  width: 15%;
-  height: 15%;
+  width: 20%;
+  height: 20%;
   filter: drop-shadow(5px 5px 0px rgba(0, 0, 0, 0.4));
   transition: transform 0.2s ease;
 }

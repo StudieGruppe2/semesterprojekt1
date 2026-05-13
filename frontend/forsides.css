@@ -10,6 +10,7 @@ body {
   font-weight: 900;
   font-style: bold;
   margin-bottom: 0%;
+  font-size: 200%;
 }
 
 .h3 {
@@ -31,6 +32,8 @@ body {
   font-weight: 700;
   font-style: italic;
   text-align: center;
+  margin-top: 0%;
+  padding-top: 0%;
 }
 
 .logo {
@@ -58,8 +61,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  gap: 15px;
+  gap: 1%;
 }
 
 /*skal indsættes i boks 1*/
