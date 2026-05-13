@@ -167,13 +167,27 @@ body {
 }
 
 .box3 {
-  width: 19%;
+  width: 80%;
   height: 350px;
-  background: #f7c9df;
+  background: #473dc6;
   border-radius: 30px;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 1);
-  background: #473dc6;
-  position: relative;
+  position: relative; /* ← vigtigt for at close-btn kan placeres absolut */
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: absolute; /* ← placerer knappen i forhold til box3 */
+  top: 10px;
+  left: 10px; /* ← venstre hjørne */
+}
+
+.close-btn img {
+  width: 32px;
+  height: 32px;
 }
 
 .popup-overlay {

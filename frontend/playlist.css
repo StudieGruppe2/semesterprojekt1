@@ -74,7 +74,7 @@ body {
 }
 
 .like-btn img {
-  width: 48px;
+  width: 3.75%;
   height: 48px;
   filter: drop-shadow(5px 5px 0px rgba(0, 0, 0, 0.4));
   transition: transform 0.2s ease;
@@ -105,7 +105,7 @@ body {
 }
 
 .album-cover {
-  width: 78px;
+  width: 61.1%;
   height: 78px;
   background: linear-gradient(135deg, #1a1a3e, #473dc6);
   border-radius: 14px;
@@ -125,7 +125,7 @@ body {
   font-weight: 800;
   font-size: 24px;
 
-  min-width: 80px;
+  min-width: 6.25%;
 }
 
 .progress-bar {
@@ -150,7 +150,7 @@ body {
 }
 
 .leavebtn {
-  width: 250px;
+  width: 19.5%;
   height: 75px;
   border-radius: 50px;
   border: none;

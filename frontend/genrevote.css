@@ -52,14 +52,14 @@ body {
 
 .container {
   display: flex;
-  gap: 3.47%;
+  gap: 50px;
   justify-content: center; /* centrer vandret */
-  align-items: stretch; /* sørger for højden på boksne strækker sig så de lige høje */
+  align-items: center; /* centrer lodret */
 }
 
 .box1 {
-  width: 45.1%;
-  height: 25.694%;
+  width: 50.8%;
+  height: 370px;
   background: #473dc6;
   border-radius: 30px;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 1);
@@ -73,8 +73,8 @@ body {
 }
 
 .box2 {
-  width: 27.7%;
-  height: 25.694%;
+  width: 31.25%;
+  height: 370px;
   background: #473dc6;
   border-radius: 30px;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 1);
@@ -91,8 +91,8 @@ body {
   position: fixed;
   bottom: 20px;
   left: 20px;
-  width: 6.94%;
-  height: 6, 94%;
+  width: 100px;
+  height: 100px;
   filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
 }
 
@@ -110,8 +110,8 @@ body {
   border: none;
   background-color: #ff66c4;
   color: #cfe6ff;
-  width: 17.36%;
-  height: 5.2%;
+  width: 19.5%;
+  height: 75px;
   font-family: "Proza Libre", sans-serif;
   font-weight: 800;
   font-size: larger;
@@ -129,7 +129,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1.3%;
+  gap: 20px;
   width: 100%;
   margin-top: 20px;
 }
@@ -145,8 +145,8 @@ body {
 }
 
 .genre-btn img {
-  width: 6.94%;
-  height: 5.5%;
+  width: 100px;
+  height: 80px;
   border-radius: 10px;
   filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
 }
@@ -171,7 +171,7 @@ body {
 
 .vote-bar {
   display: flex;
-  height: 1.3%;
+  height: 20px;
   border-radius: 10px;
   overflow: hidden;
 }
@@ -190,12 +190,13 @@ body {
   display: flex;
   justify-content: space-between;
   font-family: "Proza Libre", sans-serif;
-  margin-top: 0, 5%;
+  margin-top: 8px;
   color: #cfe6ff;
   font-weight: bold;
 }
 .partycode-wrapper {
   display: flex;
-  gap: 0.5%;
+  gap: 8px;
   align-items: center;
+  justify-content: center;
 }
