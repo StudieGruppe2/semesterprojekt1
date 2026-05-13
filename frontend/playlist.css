@@ -75,7 +75,7 @@ body {
 
 .like-btn img {
   width: 3.75%;
-  height: 48px;
+  height: 3.75%;
   filter: drop-shadow(5px 5px 0px rgba(0, 0, 0, 0.4));
   transition: transform 0.2s ease;
 }
@@ -105,7 +105,7 @@ body {
 }
 
 .album-cover {
-  width: 61.1%;
+  width: 7%;
   height: 78px;
   background: linear-gradient(135deg, #1a1a3e, #473dc6);
   border-radius: 14px;
@@ -150,7 +150,7 @@ body {
 }
 
 .leavebtn {
-  width: 19.5%;
+  width: 150%;
   height: 75px;
   border-radius: 50px;
   border: none;
