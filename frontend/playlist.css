@@ -74,8 +74,8 @@ body {
 }
 
 .like-btn img {
-  width: 3.75%;
-  height: 3.75%;
+  width: 10%;
+  height: 10%;
   filter: drop-shadow(5px 5px 0px rgba(0, 0, 0, 0.4));
   transition: transform 0.2s ease;
 }
@@ -121,31 +121,23 @@ body {
 
 .time {
   color: #3533cd;
-
   font-weight: 800;
   font-size: 24px;
-
   min-width: 6.25%;
 }
 
 .progress-bar {
   flex: 1;
-
   height: 8px;
-
   background: rgba(255, 255, 255, 0.45);
-
   border-radius: 20px;
-
   overflow: hidden;
 }
 
 .progress {
   width: 0%;
   height: 100%;
-
   background: #3533cd;
-
   border-radius: 20px;
 }
 
