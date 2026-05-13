@@ -53,6 +53,8 @@ body {
 .container {
   display: flex;
   gap: 50px;
+  margin-right: 10%;
+  margin-left: 10%;
   justify-content: center; /* centrer vandret */
   align-items: center; /* centrer lodret */
 }
