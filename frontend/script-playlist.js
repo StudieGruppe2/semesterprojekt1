@@ -87,7 +87,3 @@ async function stemPaaSang(track_id) {
     hentPlaylist();
   }
 }
-
-function scrollBar(){
-
-}
