@@ -26,7 +26,7 @@ document
     const navn = document.querySelector(".textareaname1").value;
 
     if (navn === "") {
-      alert("Skriv dit navn!");
+      alert("Write your name!");
       return;
     }
 
@@ -39,14 +39,14 @@ document
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.log("CREATE FEJL:", errorText);
-      alert("Kunne ikke oprette party");
+      console.log("CREATE ERROR:", errorText);
+      alert("Not able to create party");
       return;
     }
 
     const data = await response.json();
 
-    console.log("SERVER SVAR:", data);
+    console.log("SERVER RESPONSE:", data);
 
     window.location.href =
       "genrevote.html?mood=" +
@@ -71,12 +71,12 @@ document
     const party_code = document.querySelector(".textareacode").value;
 
     if (navn === "") {
-      alert("Skriv dit navn!");
+      alert("Write your name!");
       return;
     }
 
     if (party_code === "") {
-      alert("Indtast party kode!");
+      alert("Enter party code!");
       return;
     }
 
@@ -86,13 +86,13 @@ document
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.log("JOIN FEJL:", errorText);
-      alert("Kunne ikke joine party");
+      console.log("JOIN ERROR:", errorText);
+      alert("Not able to join party");
       return;
     }
 
     const data = await response.json();
-    console.log("JOIN SERVER SVAR:", data);
+    console.log("JOIN SERVER RESPONSE:", data);
 
     window.location.href =
       "genrevote.html?navn=" +

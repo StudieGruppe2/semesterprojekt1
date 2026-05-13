@@ -58,7 +58,7 @@ document
 
 async function voteGenre(genre_id) {
   if (!party_id) {
-    alert("Mangler party_id");
+    alert("Missing party_id");
     return;
   }
 
@@ -71,8 +71,8 @@ async function voteGenre(genre_id) {
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.log("VOTE FEJL:", errorText);
-    alert("Kunne ikke stemme");
+    console.log("VOTE ERROR:", errorText);
+    alert("Not able to vote for this genre");
     return;
   }
 

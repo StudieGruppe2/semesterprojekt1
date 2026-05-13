@@ -175,7 +175,7 @@ async function onPostPartyForUser(request, response) {
       user_id: user_id,
     });
   } catch (error) {
-    console.log("CREATE PARTY FEJL:", error.message);
+    console.log("CREATE PARTY ERROR:", error.message);
     response.status(500).json({ error: error.message });
   }
 }
@@ -234,7 +234,7 @@ async function onJoinParty(request, response) {
       mood_type: party.mood_type,
     });
   } catch (error) {
-    console.log("JOIN PARTY FEJL:", error.message);
+    console.log("JOIN PARTY ERROR:", error.message);
     response.status(500).json({ error: error.message });
   }
 }
@@ -256,7 +256,7 @@ async function onPostGenreVote(request, response) {
 
     response.json({ message: "Genre vote registered!" });
   } catch (error) {
-    console.log("GENRE VOTE FEJL:", error.message);
+    console.log("GENRE VOTE ERROR:", error.message);
     response.status(500).json({ error: error.message });
   }
 }
@@ -313,7 +313,7 @@ async function onPostTrackVote(request, response) {
   );
 
   if (checkResult.rows.length > 0) {
-    return response.json({ error: "You have already voted fr this song" });
+    return response.json({ error: "You have already voted for this song" });
   }
 
   await db.query(
