@@ -1,7 +1,7 @@
 import { connect } from "./connect.js";
 import upload from "pg-upload";
 
-const db = await connect(); // altså den skal vente med at gøre noget til forbindelsen til databasen oprettes
+const db = await connect(); 
 const timestamp = (await db.query("select now() as timestamp")).rows[0][
   "timestamp"
 ];
@@ -21,10 +21,9 @@ await db.query("drop table if exists mood cascade");
 await db.query("drop table if exists users cascade");
 await db.query("drop table if exists partymember cascade");
 
-// TODO: drop more tables, if they exist
-
 console.log("Creating tables...");
-// en query er en database-forespørgsel - en slags kommando man sender til databasen for at gøre noget
+
+// oprettelse af alle tabeller i DB
 await db.query(` 
     create table users (
         user_id     bigint primary key generated always as identity,
@@ -117,6 +116,7 @@ await db.query(`
     )
 `);
 
+// uload af info fra csv-filer ind i vores tabeller
 await upload(
   db,
   "db/mood.csv",

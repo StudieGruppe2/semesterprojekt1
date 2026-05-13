@@ -1,20 +1,13 @@
+//henter data fra URL'en og opdaterer siden baseret på det
 const params = new URLSearchParams(window.location.search);
 
+// henter mood, navn, party_code, party_name, party_id og user_id fra URL'en
 const mood = params.get("mood");
 const navn = params.get("navn");
 const party_code = params.get("party_code");
 const party_name = params.get("party_name");
 const party_id = params.get("party_id");
 const user_id = params.get("user_id");
-
-console.log("GENREVOTE PARAMS:", {
-  mood,
-  navn,
-  party_code,
-  party_name,
-  party_id,
-  user_id,
-});
 
 document.getElementById("party-code").textContent = party_code;
 document.getElementById("party-name").textContent = party_name;

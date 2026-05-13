@@ -8,18 +8,20 @@ const server = express();
 server.use(express.static("frontend"));
 server.use(onEachRequest);
 
+// Routes - her definerer vi alle de forskellige endpoints vores server skal kunne håndtere med vores route handlers og vores HTTP metoder
 server.get("/api/mood/:mood_id/mood_type", onGetMoodTypeByMoodId);
 server.get("/api/party/:party_id/genre_winner", onGetGenreWinnerByGenreVote);
 server.get("/api/party/:party_id/playlist", onGetPartyInformation);
 server.get("/api/party/:party_code/members", onGetPartyMembers);
 server.get("/api/genre_vote/:party_id", onGetGenreVotes);
 server.post("/api/party/create/:mood/:navn", onPostPartyForUser);
-server.post("/api/party/join/:party_code/:navn", onJoinParty);
+server.post("/api/party/join/:party_code/:navn", onPostJoinParty);
 server.post("/api/genre_vote/:genre_id/:party_id/:user_id", onPostGenreVote);
 server.post("/api/track_vote/:track_id/:party_id/:user_id", onPostTrackVote);
 
 server.listen(port, onServerReady);
 
+// Hourte handler til at hente mood_type baseret på mood_id
 async function onGetMoodTypeByMoodId(request, response) {
   const mood_id = request.params.mood_id;
 
@@ -35,6 +37,7 @@ async function onGetMoodTypeByMoodId(request, response) {
   response.json(dbResult.rows);
 }
 
+// Hent genre-vinder baseret på genre-stemmer for et party
 async function onGetGenreWinnerByGenreVote(request, response) {
   const party_id = request.params.party_id;
 
@@ -69,6 +72,7 @@ async function onGetGenreWinnerByGenreVote(request, response) {
   response.json(dbResult.rows[0]);
 }
 
+// Hent playlist-information for et party baseret på party_id
 async function onGetPartyInformation(request, response) {
   const party_id = request.params.party_id;
 
@@ -100,7 +104,7 @@ async function onGetPartyInformation(request, response) {
   response.json(dbResult.rows);
 }
 
-// CREATE PARTY AS HOST
+// Opret party og host user
 async function onPostPartyForUser(request, response) {
   try {
     const mood = request.params.mood;
@@ -180,8 +184,8 @@ async function onPostPartyForUser(request, response) {
   }
 }
 
-// JOIN PARTY
-async function onJoinParty(request, response) {
+// Join party handler
+async function onPostJoinParty(request, response) {
   try {
     const party_code = request.params.party_code;
     const navn = request.params.navn;
@@ -239,7 +243,7 @@ async function onJoinParty(request, response) {
   }
 }
 
-// STEM PÅ GENRE
+// Genre-stemme handler
 async function onPostGenreVote(request, response) {
   try {
     const genre_id = request.params.genre_id;
@@ -260,7 +264,7 @@ async function onPostGenreVote(request, response) {
     response.status(500).json({ error: error.message });
   }
 }
-// HENT GENRE-STEMMER
+// Hent genre-stemmer for et party
 async function onGetGenreVotes(request, response) {
   const party_id = request.params.party_id;
 
@@ -277,7 +281,7 @@ async function onGetGenreVotes(request, response) {
   response.json(result.rows);
 }
 
-// SE PARTYMEMBERS
+// Hent partymedlemmer baseret på party_code
 async function onGetPartyMembers(request, response) {
   const party_code = request.params.party_code;
 
@@ -296,7 +300,7 @@ async function onGetPartyMembers(request, response) {
   response.json(result.rows);
 }
 
-// stem på track
+// Track-stemme handler
 async function onPostTrackVote(request, response) {
   const track_id = request.params.track_id;
   const party_id = request.params.party_id;

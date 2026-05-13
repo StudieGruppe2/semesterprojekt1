@@ -3,6 +3,7 @@ const params = new URLSearchParams(window.location.search);
 const party_id = params.get("party_id");
 const user_id = params.get("user_id");
 
+
 let timerInterval = null;
 
 function startTimer(duration_ms) {
@@ -61,15 +62,20 @@ async function hentPlaylist() {
     const tid = minutter + ":" + (sekunder < 10 ? "0" : "") + sekunder;
 
     række.innerHTML = `
-      <span>${sang.title}</span>
-      <span>${sang.artist}</span>
-      <span>${tid}</span>
-      <button class="like-btn" onclick="stemPaaSang(${sang.track_id})">
-        <img src="pinkhjerte.png" alt="like" />
-      </button>
-    `;
+  <span>${sang.title}</span>
+  <span>${sang.artist}</span>
+  <span>${tid}</span>
+`;
 
-    box1.appendChild(række);
+const knap = document.createElement("button");
+knap.classList.add("like-btn");
+knap.innerHTML = `<img src="pinkhjerte.png" alt="like" />`;
+knap.addEventListener("click", function () {
+  stemPaaSang(sang.track_id);
+});
+
+række.appendChild(knap);
+box1.appendChild(række);
   });
 }
 
