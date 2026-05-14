@@ -306,31 +306,27 @@ async function onPostTrackVote(request, response) {
   const party_id = request.params.party_id;
   const user_id = request.params.user_id;
 
-  const checkResult = await db.query(
-    `
-    select track_vote_id FROM track_vote
-    where track_id = $1
-    and party_id = $2
-    and user_id = $3
-  `,
-    [track_id, party_id, user_id],
-  );
-
-  if (checkResult.rows.length > 0) {
-    return response.json({ error: "You have already voted for this song" });
-  }
-
+  // Sletter gammel stemme hvis den findes
   await db.query(
     `
-    insert into track_vote (track_id, party_id, user_id)
-    values ($1, $2, $3)
+    DELETE FROM track_vote
+    WHERE party_id = $1
+    AND user_id = $2
+  `,
+    [party_id, user_id],
+  );
+
+  // Gemmer den nye stemme
+  await db.query(
+    `
+    INSERT INTO track_vote (track_id, party_id, user_id)
+    VALUES ($1, $2, $3)
   `,
     [track_id, party_id, user_id],
   );
 
   response.json({ message: "vote registered" });
 }
-
 function onServerReady() {
   console.log("Webserver running on port", port);
 }

@@ -24,8 +24,6 @@ function startTimer(duration_ms, songs, index) {
       clearInterval(timerInterval);
       tidTilbage = 0;
 
-      stemtePaaSange = [] // rydder listen for stemte sangen, når en sang er færdig
-
       // Starter næste sang når nuværende er færdig
       const nextIndex = index + 1;
       if (nextIndex < songs.length) {
@@ -105,10 +103,6 @@ let stemtePaaSange = []
 
 // Sender en stemme til serveren for den valgte sang
 async function stemPaaSang(track_id) {
-  if (stemtePaaSange.includes(track_id)){
-    alert("You already voted for this song!)");
-    return;
-  }
 
   const response = await fetch(
     "/api/track_vote/" + track_id + "/" + party_id + "/" + user_id,
@@ -121,8 +115,6 @@ async function stemPaaSang(track_id) {
   if (data.error) {
     alert(data.error);
   } else {
-    //tilføjer sangen til listen over stemte sange
-    stemtePaaSange.push(track_id);
     // Opdaterer listen med det samme efter stemme
     hentPlaylist();
   }
