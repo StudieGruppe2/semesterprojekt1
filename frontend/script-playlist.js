@@ -18,39 +18,44 @@ function startTimer(duration_ms, songs, index) {
   if (timerInterval) {
     clearInterval(timerInterval);
   }
+}
 
   let tidTilbage = duration_ms;
 
   // Kører hvert sekund og opdaterer tiden på siden
-  timerInterval = setInterval(function () {
+  timerInterval = setInterval(async function () {
     tidTilbage -= 1000;
 
-    // Stopper timeren når tiden er gået og starter næste sang
+ // Stopper timeren når tiden er gået og starter næste sang
     if (tidTilbage <= 0) {
       clearInterval(timerInterval);
       tidTilbage = 0;
 
-      // Rydder stemmer og sætter sangSpiller til false så næste sang kan starte
       stemtePaaSange = [];
       sangSpiller = false;
 
-      // Henter opdateret playlist så den mest likede sang starter næst
-      hentPlaylist();
-    }
+      const response = await fetch("/api/party/" + party_id + "/playlist");
+      nuværendeSange = await response.json();
 
+      if (nuværendeSange.length > 0) {
+        nuværendeIndex = 0;
+        startTimer(nuværendeSange[0].duration_ms, nuværendeSange, 0);
+      }
+    }
+    
     // Konverterer millisekunder til minutter og sekunder
     const minutter = Math.floor(tidTilbage / 60000);
     const sekunder = Math.floor((tidTilbage % 60000) / 1000);
-
+    
     // Viser tiden på siden
     document.querySelector(".time").textContent =
       minutter + ":" + (sekunder < 10 ? "0" : "") + sekunder;
 
-    // Opdaterer progress bar bredde baseret på hvor meget tid der er tilbage
+
+// Opdaterer progress bar bredde baseret på hvor meget tid der er tilbage
     const procent = (tidTilbage / duration_ms) * 100;
     document.querySelector(".progress").style.width = procent + "%";
-  }, 1000);
-}
+}, 1000);
 
 // Henter playlisten fra serveren og viser sangene på siden
 async function hentPlaylist() {
