@@ -176,7 +176,7 @@ body {
 
   .row {
     font-size: 15px;
-    grid-template-columns: 1.5fr 1.5fr 1fr 1fr;
+    grid-template-columns: 2fr 2fr 1fr 0.5fr 1fr;
   }
 
   .bottom-area {
