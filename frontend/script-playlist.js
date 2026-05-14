@@ -16,7 +16,7 @@ function startTimer(duration_ms, songs, index) {
   let tidTilbage = duration_ms;
 
   // Kører hvert sekund og opdaterer tiden på siden
-  timerInterval = setInterval(async function() {
+  timerInterval = setInterval(async function () {
     tidTilbage -= 1000;
 
     // Stopper timeren når tiden er gået og starter næste sang
@@ -27,8 +27,7 @@ function startTimer(duration_ms, songs, index) {
       // Starter næste sang når nuværende er færdig
       timerStartet = false;
       await hentPlaylist();
-      
-      }
+    }
 
     // Konverterer millisekunder til minutter og sekunder
     const minutter = Math.floor(tidTilbage / 60000);
@@ -51,6 +50,12 @@ let timerStartet = false;
 async function hentPlaylist() {
   const response = await fetch("/api/party/" + party_id + "/playlist");
   const sange = await response.json();
+
+  // Viser den sang der spiller nu
+  if (sange.length > 0) {
+    document.getElementById("nuværende-sang").textContent =
+      sange[0].title + " - " + sange[0].artist;
+  }
 
   // Starter timeren for første sang - kun første gang
   if (sange.length > 0 && !timerStartet) {
