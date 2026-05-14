@@ -24,13 +24,13 @@ if (mood === "Dinner") {
   genre1_id = 400;
   genre2_id = 401;
 } else if (mood === "Party") {
-  document.getElementById("genre1-navn").textContent = "Pop";
+  document.getElementById("genre1-navn").textContent = "Techno";
   document.getElementById("genre2-navn").textContent = "House";
   genre1_id = 402;
   genre2_id = 403;
 } else if (mood === "Workout") {
   document.getElementById("genre1-navn").textContent = "Rock";
-  document.getElementById("genre2-navn").textContent = "Techno";
+  document.getElementById("genre2-navn").textContent = "Pop";
   genre1_id = 404;
   genre2_id = 405;
 } else if (mood === "Chill") {
