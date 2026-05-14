@@ -6,71 +6,58 @@ const user_id = params.get("user_id");
 // Holder styr på timer intervallet så vi kan stoppe det
 let timerInterval = null;
 
-// Holder styr på om en sang spiller
-let sangSpiller = false;
-
-// Holder styr på hvilke sange brugeren har stemt på i denne sang
-let stemtePaaSange = [];
-
 // Starter en nedtælling baseret på sangens længde i millisekunder
 function startTimer(duration_ms, songs, index) {
   // Stopper gammel timer hvis der allerede kører en
   if (timerInterval) {
     clearInterval(timerInterval);
   }
-}
 
   let tidTilbage = duration_ms;
 
   // Kører hvert sekund og opdaterer tiden på siden
-  timerInterval = setInterval(async function () {
+  timerInterval = setInterval(function () {
     tidTilbage -= 1000;
 
- // Stopper timeren når tiden er gået og starter næste sang
+    // Stopper timeren når tiden er gået og starter næste sang
     if (tidTilbage <= 0) {
       clearInterval(timerInterval);
       tidTilbage = 0;
 
-      stemtePaaSange = [];
-      sangSpiller = false;
-
-      const response = await fetch("/api/party/" + party_id + "/playlist");
-      nuværendeSange = await response.json();
-
-      if (nuværendeSange.length > 0) {
-        nuværendeIndex = 0;
-        startTimer(nuværendeSange[0].duration_ms, nuværendeSange, 0);
+      // Starter næste sang når nuværende er færdig
+      const nextIndex = index + 1;
+      if (nextIndex < songs.length) {
+        const nextSong = songs[nextIndex];
+        startTimer(nextSong.duration_ms, songs, nextIndex);
       }
     }
-    
+
     // Konverterer millisekunder til minutter og sekunder
     const minutter = Math.floor(tidTilbage / 60000);
     const sekunder = Math.floor((tidTilbage % 60000) / 1000);
-    
+
     // Viser tiden på siden
     document.querySelector(".time").textContent =
       minutter + ":" + (sekunder < 10 ? "0" : "") + sekunder;
 
-
-// Opdaterer progress bar bredde baseret på hvor meget tid der er tilbage
+    // Opdaterer progress bar bredde baseret på hvor meget tid der er tilbage
     const procent = (tidTilbage / duration_ms) * 100;
     document.querySelector(".progress").style.width = procent + "%";
-}, 1000);
+  }, 1000);
+}
+
+// Holder styr på om timeren er startet så den ikke resetter ved polling
+let timerStartet = false;
 
 // Henter playlisten fra serveren og viser sangene på siden
 async function hentPlaylist() {
   const response = await fetch("/api/party/" + party_id + "/playlist");
   const sange = await response.json();
 
-  //viser den sang der afspilles
-  if (sange.length > 0){
-    document.getElementById("nuværende-sang").textContent=sange[0].title + " - " + sange[0].artist;
-  }
-
-  // Starter timeren for første sang kun hvis ingen sang spiller
-  if (sange.length > 0 && !sangSpiller) {
-    sangSpiller = true;
+  // Starter timeren for første sang - kun første gang
+  if (sange.length > 0 && !timerStartet) {
     startTimer(sange[0].duration_ms, sange, 0);
+    timerStartet = true;
   }
 
   const box1 = document.querySelector(".box1");
@@ -91,7 +78,6 @@ async function hentPlaylist() {
     const sekunder = Math.floor((sang.duration_ms % 60000) / 1000);
     const tid = minutter + ":" + (sekunder < 10 ? "0" : "") + sekunder;
 
-    // 4 spans - titel, artist, tid og likes
     række.innerHTML = `
       <span>${sang.title}</span>
       <span>${sang.artist}</span>
@@ -112,14 +98,11 @@ async function hentPlaylist() {
   });
 }
 
+//holder styr på hvilke sange brugeren harstemt på, så de kan stemme emre end en gang i samme party
+let stemtePaaSange = [];
+
 // Sender en stemme til serveren for den valgte sang
 async function stemPaaSang(track_id) {
-  // Tjekker om brugeren allerede har stemt i denne sang
-  if (stemtePaaSange.includes(track_id)) {
-    alert("Vent til næste sang!");
-    return;
-  }
-
   const response = await fetch(
     "/api/track_vote/" + track_id + "/" + party_id + "/" + user_id,
     { method: "POST" },
@@ -127,12 +110,10 @@ async function stemPaaSang(track_id) {
 
   const data = await response.json();
 
-  // Viser fejl hvis noget gik galt
+  // Viser fejl hvis brugeren allerede har stemt
   if (data.error) {
     alert(data.error);
   } else {
-    // Tilføjer sangen til listen over stemte sange
-    stemtePaaSange.push(track_id);
     // Opdaterer listen med det samme efter stemme
     hentPlaylist();
   }
