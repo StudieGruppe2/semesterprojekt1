@@ -16,7 +16,7 @@ function startTimer(duration_ms, songs, index) {
   let tidTilbage = duration_ms;
 
   // Kører hvert sekund og opdaterer tiden på siden
-  timerInterval = setInterval(function () {
+  timerInterval = setInterval(async function() {
     tidTilbage -= 1000;
 
     // Stopper timeren når tiden er gået og starter næste sang
@@ -25,12 +25,10 @@ function startTimer(duration_ms, songs, index) {
       tidTilbage = 0;
 
       // Starter næste sang når nuværende er færdig
-      const nextIndex = index + 1;
-      if (nextIndex < songs.length) {
-        const nextSong = songs[nextIndex];
-        startTimer(nextSong.duration_ms, songs, nextIndex);
+      timerStartet = false;
+      await hentPlaylist();
+      
       }
-    }
 
     // Konverterer millisekunder til minutter og sekunder
     const minutter = Math.floor(tidTilbage / 60000);
