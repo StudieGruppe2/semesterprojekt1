@@ -57,6 +57,11 @@ async function hentPlaylist() {
   const response = await fetch("/api/party/" + party_id + "/playlist");
   const sange = await response.json();
 
+  //viser den sang der afspilles
+  if (sange.length > 0){
+    document.getElementById("nuværende-sang").textContent=sange[0].title + " - " + sange[0].artist;
+  }
+
   // Starter timeren for første sang kun hvis ingen sang spiller
   if (sange.length > 0 && !sangSpiller) {
     sangSpiller = true;
