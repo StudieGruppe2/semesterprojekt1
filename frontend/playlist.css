@@ -48,7 +48,7 @@ body {
 
 .row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr 0.5fr 1fr;
+  grid-template-columns: 2fr 2fr 1fr 1fr 0.5fr;
   align-items: center;
   color: #cfe6ff;
   font-size: 20px;
