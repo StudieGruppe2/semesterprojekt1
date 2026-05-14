@@ -13,11 +13,12 @@ function startTimer(duration_ms, songs, index) {
     clearInterval(timerInterval);
   }
 
-  let tidTilbage = duration_ms;
+  currentSongIndex = index;
+  let timeLeft = duration_ms;
 
   // Kører hvert sekund og opdaterer tiden på siden
   timerInterval = setInterval(function () {
-    tidTilbage -= 1000;
+    timeLeft -= 1000;
 
     // Stopper timeren når tiden er gået og starter næste sang
     if (tidTilbage <= 0) {
@@ -26,9 +27,10 @@ function startTimer(duration_ms, songs, index) {
 
       // Starter næste sang når nuværende er færdig
       const nextIndex = index + 1;
+      currentSongIndex = nextIndex;
+
       if (nextIndex < songs.length) {
-        const nextSong = songs[nextIndex];
-        startTimer(nextSong.duration_ms, songs, nextIndex);
+        startTimer(currentSongs[nextIndex].duration_ms, songs, nextIndex);
       }
     }
 
@@ -48,17 +50,32 @@ function startTimer(duration_ms, songs, index) {
 
 // Holder styr på om timeren er startet så den ikke resetter ved polling
 let timerStartet = false;
+let currentSongs = []; // <-- tilføj denne
+let currentSongIndex = 0; // <-- og denne
 
 // Henter playlisten fra serveren og viser sangene på siden
 async function hentPlaylist() {
   const response = await fetch("/api/party/" + party_id + "/playlist");
   const sange = await response.json();
+  
+  currentSongs = sange;
 
   // Starter timeren for første sang - kun første gang
   if (sange.length > 0 && !timerStartet) {
     startTimer(sange[0].duration_ms, sange, 0);
     timerStartet = true;
   }
+
+  if (tidTilbage <= 0) 
+  clearInterval(timerInterval);
+  tidTilbage = 0;
+
+  const nextIndex = currentSongIndex + 1;
+  currentSongIndex = nextIndex;
+
+  if (nextIndex < currentSongs.length) {
+    startTimer(currentSongs[nextIndex].duration_ms, currentSongs, nextIndex);
+    
 
   const box1 = document.querySelector(".box1");
 
@@ -125,3 +142,5 @@ hentPlaylist();
 
 // Opdaterer playlisten hvert 3. sekund (polling)
 setInterval(hentPlaylist, 3000);
+
+}
