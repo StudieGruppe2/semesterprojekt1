@@ -167,7 +167,7 @@ async function onPostPartyForUser(request, response) {
       FROM playlist
       JOIN genre USING (genre_id)
       WHERE genre.mood_id = $1 -- det skal være genre der passer til mood typen
-      LIMIT 1 - tag kun en playlist
+      LIMIT 1 -- tag kun en playlist
       `,
       [mood_id],
     );
