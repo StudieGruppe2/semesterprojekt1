@@ -52,11 +52,12 @@ async function onGetGenreWinnerByGenreVote(request, response) {
     `,
     [party_id],
   );
-
+// tjekker for om der er stememr
   if (dbResult.rows.length === 0) {
     return response.json({ message: "no votes yet" });
   }
 
+  // tjekker for om der kun er en genre med stememr - automatisk vinderen
   if (dbResult.rows.length === 1) {
     return response.json(dbResult.rows[0]);
   }
@@ -71,6 +72,7 @@ async function onGetGenreWinnerByGenreVote(request, response) {
     return response.json(tilfældig);
   }
 
+  // hvis det ikek er uafgjort returneres genren med flest stemmer
   response.json(dbResult.rows[0]); // svare i JSON format for at frontend og javascript kan forstå
 }
 

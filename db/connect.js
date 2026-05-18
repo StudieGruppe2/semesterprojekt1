@@ -1,4 +1,4 @@
-import pg from 'pg';
+import pg from 'pg'; // gør at node kan oprette forbindelse til databasen
 import dotenv from 'dotenv';
 
 
@@ -9,7 +9,7 @@ const env = {
     database: process.env.PG_DATABASE,
     user: process.env.PG_USER,
     password: process.env.PG_PASSWORD,
-    ssl: { rejectUnauthorized: false },
+    ssl: { rejectUnauthorized: false }, //krypteret forbindelse til databasen
 };
 
 
