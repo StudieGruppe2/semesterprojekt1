@@ -21,7 +21,7 @@ server.post("/api/track_vote/:track_id/:party_id/:user_id", onPostTrackVote);
 
 server.listen(port, onServerReady);
 
-// Hourte handler til at hente mood_type baseret på mood_id
+// Route handler til at hente mood_type baseret på mood_id
 async function onGetMoodTypeByMoodId(request, response) {
   const mood_id = request.params.mood_id;
 
@@ -34,7 +34,8 @@ async function onGetMoodTypeByMoodId(request, response) {
     [mood_id],
   );
 
-  response.json(dbResult.rows);
+  response.json(dbResult.rows); // svare i et array med et objekt inden i med key:value pair 
+  
 }
 
 // Hent genre-vinder baseret på genre-stemmer for et party
@@ -46,7 +47,7 @@ async function onGetGenreWinnerByGenreVote(request, response) {
     SELECT genre_id, COUNT(*)::int AS stemmer -- :: betyder at det skal være et heltal
     FROM genre_vote
     WHERE party_id = $1
-    GROUP BY genre_id
+    GROUP BY genre_id -- den sørger for den ved hvad den skal COUNT. Uden denne ville den count alle stemmer til et tal, men denne sørger for de tælles pr genre
     ORDER BY stemmer DESC
     `,
     [party_id],
@@ -60,16 +61,17 @@ async function onGetGenreWinnerByGenreVote(request, response) {
     return response.json(dbResult.rows[0]);
   }
 
+  // de to variabler henter bare de to genre med flest stemmer
   const stemmer_genre1 = dbResult.rows[0].stemmer;
   const stemmer_genre2 = dbResult.rows[1].stemmer;
 
   if (stemmer_genre1 === stemmer_genre2) {
-    const uafgjort = [dbResult.rows[0], dbResult.rows[1]];
-    const tilfældig = uafgjort[Math.floor(Math.random() * uafgjort.length)];
+    const uafgjort = [dbResult.rows[0], dbResult.rows[1]]; // laver nyt array med de uafgjorte genres. I arrayet er de hvert deres objekt. Gøres fordi det er disse to der skal vælges imellem
+    const tilfældig = uafgjort[Math.floor(Math.random() * uafgjort.length)]; // math random giver et tal mellem 0 og 1, som gange med 2, fordi det er længden på "uafgjort", mat.floor, runder det ned
     return response.json(tilfældig);
   }
 
-  response.json(dbResult.rows[0]);
+  response.json(dbResult.rows[0]); // svare i JSON format for at frontend og javascript kan forstå
 }
 
 // Hent playlist-information for et party baseret på party_id
@@ -91,7 +93,7 @@ async function onGetPartyInformation(request, response) {
       ON t.track_id = tp.track_id
     JOIN artist a 
       ON a.artist_id = t.artist_id
-    LEFT JOIN track_vote tv 
+    LEFT JOIN track_vote tv -- sørger for at tage tracks uden stemmer med også, da de jo stadig er en del af playlisten
       ON tv.track_id = t.track_id 
       AND tv.party_id = p.party_id
     WHERE p.party_id = $1
@@ -106,7 +108,8 @@ async function onGetPartyInformation(request, response) {
 
 // Opret party og host user
 async function onPostPartyForUser(request, response) {
-  try {
+  // bruges til at se om koden virker. Gør den ikke det går man til catch, og giver en error message til clienten
+  try { // smart at have med her fordi der er meget der kan gå galt
     const mood = request.params.mood;
     const navn = request.params.navn;
 
@@ -119,50 +122,50 @@ async function onPostPartyForUser(request, response) {
       [mood],
     );
 
-    const mood_id = moodResult.rows[0].mood_id;
+    const mood_id = moodResult.rows[0].mood_id; // finder databse resultater relateret til mood_id - altså hvilke genre der skal præsenteres
 
     const playlistResult = await db.query(
       `
       SELECT playlist_id
       FROM playlist
       JOIN genre USING (genre_id)
-      WHERE genre.mood_id = $1
-      LIMIT 1
+      WHERE genre.mood_id = $1 -- det skal være genre der passer til mood typen
+      LIMIT 1 - tag kun en playlist
       `,
       [mood_id],
     );
 
-    const playlist_id = playlistResult.rows[0].playlist_id;
+    const playlist_id = playlistResult.rows[0].playlist_id; // sørger for at playlist id bliver sat til det databasen returnere
 
-    const userResult = await db.query(
+    const userResult = await db.query( // database resultater udfra user og navn - der oprettes en ny user
       `
-      INSERT INTO users (user_name, is_host)
+      INSERT INTO users (user_name, is_host) -- insert fordi det er en POST metode 
       VALUES ($1, true)
-      RETURNING user_id, user_name
+      RETURNING user_id, user_name -- giv mig de nye user med user_id og user name tilbage
       `,
       [navn],
     );
 
-    const user_id = userResult.rows[0].user_id;
+    const user_id = userResult.rows[0].user_id; // gemmer user_id
 
-    const partyResult = await db.query(
+    const partyResult = await db.query( // opretter party
       `
       INSERT INTO party (party_name, party_code, mood_id, playlist_id, user_id)
-      VALUES ($1, $2, $3, $4, $5)
+      VALUES ($1, $2, $3, $4, $5) -- navn, random party_code, mood_id, playlist_id & user_id
       RETURNING party_id, party_code, party_name
       `,
       [
         navn,
-        Math.floor(Math.random() * 9000) + 1000,
+        Math.floor(Math.random() * 9000) + 1000, // laver en kode til party mellem tallene 1000 og 9999
         mood_id,
         playlist_id,
         user_id,
       ],
     );
 
-    const party_id = partyResult.rows[0].party_id;
+    const party_id = partyResult.rows[0].party_id; // gemmer det party id der er på det nye oprettede party
 
-    await db.query(
+    await db.query( // tilføjer host som partymember
       `
       INSERT INTO partymember (party_id, user_id)
       VALUES ($1, $2)
@@ -170,7 +173,7 @@ async function onPostPartyForUser(request, response) {
       [party_id, user_id],
     );
 
-    response.json({
+    response.json({ // send alt dette retur som response
       party_id: party_id,
       party_code: partyResult.rows[0].party_code,
       party_name: partyResult.rows[0].party_name,
@@ -179,8 +182,9 @@ async function onPostPartyForUser(request, response) {
       user_id: user_id,
     });
   } catch (error) {
-    console.log("CREATE PARTY ERROR:", error.message);
-    response.status(500).json({ error: error.message });
+    // hvis der er sket fejl i koden ender det her
+    console.log("CREATE PARTY ERROR:", error.message); // viser fejl i terminalen
+    response.status(500).json({ error: error.message }); // giver besked i frontend
   }
 }
 
