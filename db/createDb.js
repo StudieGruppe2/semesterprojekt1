@@ -1,4 +1,4 @@
-import { connect } from "./connect.js";
+import { connect } from "./connect.js"; 
 import upload from "pg-upload";
 
 const db = await connect(); 
@@ -26,7 +26,7 @@ console.log("Creating tables...");
 // oprettelse af alle tabeller i DB
 await db.query(` 
     create table users (
-        user_id     bigint primary key generated always as identity,
+        user_id     bigint primary key generated always as identity, -- skabe auto-inkrementerende primærnøgler på
         user_name   text,
         is_host     boolean
     )
@@ -77,8 +77,7 @@ await db.query(`
        party_name       text not null,
        mood_id          integer not null references mood (mood_id),
        playlist_id      integer not null references playlist (playlist_id),
-       user_id          bigint references users (user_id),
-       created_at       timestamp default now()
+       user_id          bigint references users (user_id)
     )
 `);
 
@@ -93,7 +92,7 @@ await db.query(`
     create table track_playlist (
        track_id          integer not null references tracks (track_id),
        playlist_id       integer not null references playlist (playlist_id),
-       sort_order        integer default 0
+       primary key       (track_id, playlist_id)
     )
 `);
 
@@ -101,8 +100,9 @@ await db.query(`
     create table track_vote (
        track_vote_id       integer primary key generated always as identity,
        track_id            integer not null references tracks (track_id),
-       user_id             bigint unique references users (user_id),
-       party_id            integer references party (party_id)
+       user_id             bigint not null references users (user_id),
+       party_id            integer not null references party (party_id),
+       unique              (user_id, party_id)
     )
 `);
 
@@ -111,12 +111,12 @@ await db.query(`
     genre_vote_id integer primary key generated always as identity,
     genre_id      integer not null references genre (genre_id),
     user_id       bigint not null references users (user_id),
-    party_id      integer references party (party_id),
-    unique (user_id, party_id)
+    party_id      integer not null references party (party_id),
+    unique        (user_id, party_id)
     )
 `);
 
-// uload af info fra csv-filer ind i vores tabeller
+// upload af info fra csv-filer ind i vores tabeller
 await upload(
   db,
   "db/mood.csv",

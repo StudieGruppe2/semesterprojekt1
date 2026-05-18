@@ -3,21 +3,21 @@ const popup = document.getElementById("popup");
 let valgtMood = "";
 
 // Lytter på klik på mood knapperne og gemmer det valgte mood
-const moodButtons = document.querySelectorAll(".mood-btn");
+const moodButtons = document.querySelectorAll(".mood-btn"); // finder alle HTML elementer med mood-btn som id
 
-moodButtons.forEach(function (button) {
-  button.addEventListener("click", function () {
-    valgtMood = button.id;
-    console.log("Valgt mood:", valgtMood);
-    popup.style.display = "flex";
+moodButtons.forEach(function (button) { // siger "for hver mood-knap"
+  button.addEventListener("click", function () { // betyder "når denen knap klikkes"
+    valgtMood = button.id;// gemmer id'et fra den knap brugeren klikker på - eks. chill
+    console.log("Valgt mood:", valgtMood); // logger vores valgte mood med teksten "valgt mood"
+    popup.style.display = "flex"; // gør pop-up elementet synligt
   });
 });
 
 // Lukker popup når der klikkes på kryds knappen
 function closePopup() {
-  popup.style.display = "none";
+  popup.style.display = "none"; // bliver til none fordi den forsvinder
 }
-document.querySelector(".close-btn").addEventListener("click", closePopup);
+document.querySelector(".close-btn").addEventListener("click", closePopup); // udenfor scopet fordi den registrerer hvad der skal ske senere
 
 // Opretter et party når host trykker "Create party"
 document

@@ -27,14 +27,14 @@ async function onGetMoodTypeByMoodId(request, response) {
 
   const dbResult = await db.query(
     `
-    SELECT mood_type
+    SELECT mood_type --DML kommandoer
     FROM mood
     WHERE mood_id = $1
     `,
     [mood_id],
   );
 
-  response.json(dbResult.rows); // svare i et array med et objekt inden i med key:value pair 
+  response.json(dbResult.rows); // svare i et array med et objekt inden i med key:value pair -- metodekald
   
 }
 
@@ -105,6 +105,43 @@ async function onGetPartyInformation(request, response) {
 
   response.json(dbResult.rows);
 }
+
+// Hent partymedlemmer baseret på party_code
+async function onGetPartyMembers(request, response) {
+  const party_code = request.params.party_code;
+
+  const result = await db.query(
+    `
+    SELECT u.user_name
+    FROM partymember pm
+    JOIN users u ON u.user_id = pm.user_id
+    JOIN party p ON p.party_id = pm.party_id
+    WHERE p.party_code = $1
+    ORDER BY pm.partymember_id
+    `,
+    [party_code],
+  );
+
+  response.json(result.rows);
+}
+
+// Hent genre-stemmer for et party
+async function onGetGenreVotes(request, response) {
+  const party_id = request.params.party_id;
+
+  const result = await db.query(
+    `
+    SELECT genre_id, COUNT(*)::int AS votes
+    FROM genre_vote
+    WHERE party_id = $1
+    GROUP BY genre_id
+    `,
+    [party_id],
+  );
+
+  response.json(result.rows);
+}
+
 
 // Opret party og host user
 async function onPostPartyForUser(request, response) {
@@ -233,7 +270,7 @@ async function onPostJoinParty(request, response) {
       [party.party_id, user_id],
     );
 
-    response.json({
+    response.json({ // de data frontend skal bruge
       party_id: party.party_id,
       party_code: party.party_code,
       party_name: party.party_name,
@@ -268,41 +305,7 @@ async function onPostGenreVote(request, response) {
     response.status(500).json({ error: error.message });
   }
 }
-// Hent genre-stemmer for et party
-async function onGetGenreVotes(request, response) {
-  const party_id = request.params.party_id;
 
-  const result = await db.query(
-    `
-    SELECT genre_id, COUNT(*)::int AS votes
-    FROM genre_vote
-    WHERE party_id = $1
-    GROUP BY genre_id
-    `,
-    [party_id],
-  );
-
-  response.json(result.rows);
-}
-
-// Hent partymedlemmer baseret på party_code
-async function onGetPartyMembers(request, response) {
-  const party_code = request.params.party_code;
-
-  const result = await db.query(
-    `
-    SELECT u.user_name
-    FROM partymember pm
-    JOIN users u ON u.user_id = pm.user_id
-    JOIN party p ON p.party_id = pm.party_id
-    WHERE p.party_code = $1
-    ORDER BY pm.partymember_id
-    `,
-    [party_code],
-  );
-
-  response.json(result.rows);
-}
 
 // Track-stemme handler
 async function onPostTrackVote(request, response) {
@@ -331,6 +334,8 @@ async function onPostTrackVote(request, response) {
 
   response.json({ message: "vote registered" });
 }
+
+
 function onServerReady() {
   console.log("Webserver running on port", port);
 }
