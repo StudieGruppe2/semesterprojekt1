@@ -165,4 +165,3 @@ async function stemPaaSang(track_id) {
 // Kalder hentPlaylist første gang siden loader
 hentPlaylist();
 
-// Opdaterer playlisten hvert

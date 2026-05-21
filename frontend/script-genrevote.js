@@ -93,9 +93,10 @@ async function updateVotes() {
   let genre1Votes = 0;
   let genre2Votes = 0;
 
+  
   votes.forEach(function (vote) {
-    if (Number(vote.genre_id) === Number(genre1_id)) {
-      genre1Votes = Number(vote.votes);
+    if (Number(vote.genre_id) === Number(genre1_id)) { // sørger for at begge værdier sammenlignes i tal
+      genre1Votes = Number(vote.votes); 
     }
 
     if (Number(vote.genre_id) === Number(genre2_id)) {
@@ -137,7 +138,7 @@ async function updateMembers() {
     const p = document.createElement("p");
     p.className = "p";
     p.textContent = member.user_name;
-    box.appendChild(p);
+    box.appendChild(p); // tilføjer p elementet inde i vores box
   });
 }
 

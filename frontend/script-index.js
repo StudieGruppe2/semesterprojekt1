@@ -2,13 +2,14 @@
 const popup = document.getElementById("popup");
 let valgtMood = "";
 
-// Lytter på klik på mood knapperne og gemmer det valgte mood
+// querySelecterAll + forEach + addEventListener
 const moodButtons = document.querySelectorAll(".mood-btn"); // finder alle HTML elementer med mood-btn som id
 
-moodButtons.forEach(function (button) { // siger "for hver mood-knap"
-  button.addEventListener("click", function () { // betyder "når denen knap klikkes"
-    valgtMood = button.id;// gemmer id'et fra den knap brugeren klikker på - eks. chill
-    console.log("Valgt mood:", valgtMood); // logger vores valgte mood med teksten "valgt mood"
+// forEach loop som mulligøre at klikke og vælge mood + gemmer det valgte mood
+moodButtons.forEach(function (button) { // callback function til forEach
+  button.addEventListener("click", function () {
+    valgtMood = button.id;
+    console.log("Valgt mood:", valgtMood);
     popup.style.display = "flex"; // gør pop-up elementet synligt
   });
 });
@@ -47,7 +48,7 @@ document
       return;
     }
 
-    const data = await response.json();
+    const data = await response.json(); // konvertere serverens svar til JSON
 
     console.log("SERVER RESPONSE:", data);
 

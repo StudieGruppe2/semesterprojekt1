@@ -18,8 +18,9 @@ body {
   font-weight: 900;
   letter-spacing: clamp(8px, 2vw, 28px);
   background: linear-gradient(to right, #000000, #3533cd);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+ -webkit-background-clip: text; /* Gør at baggrunden kun vises inde i selve teksten */
+  -webkit-text-fill-color: transparent; /* Gør den normale tekstfarve gennemsigtig,
+så baggrunden (fx gradienten) kan ses */
   filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
   margin-top: 0%;
   text-align: center;
@@ -42,13 +43,16 @@ body {
   border-radius: 30px;
   box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.55);
   padding: 45px 55px;
-  max-height: 500px; /* triggers the scrollbar when content overflows */
-  overflow-y: auto; /* shows scrollbar on the right when needed */
+  max-height: 500px;/* Sørger for at indhold som bliver for langt i højden,
+kan scrolles vertikalt (op og ned) */
+  overflow-y: auto; /*
+Browseren viser kun scrollbar hvis indholdet overflow'er.
+Hvis der er plads nok, vises ingen scrollbar */
 }
 
 .row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr 1fr 0.5fr;
+  grid-template-columns: 2fr 2fr 1fr 1fr 0.5fr; /* Definerer hvor brede kolonnerne i gridet skal være fr=fraction */
   align-items: center;
   color: #cfe6ff;
   font-size: 20px;
@@ -169,7 +173,7 @@ body {
   transform: scale(1.05);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 900px) { /*Hvis skærmen er 900px bred eller mindre, så brug disse styles*/
   body {
     padding: 30px 20px 180px;
   }

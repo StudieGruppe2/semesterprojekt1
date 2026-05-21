@@ -27,18 +27,18 @@ async function onGetMoodTypeByMoodId(request, response) {
 
   const dbResult = await db.query(
     `
-    SELECT mood_type --DML kommandoer
+    SELECT mood_type 
     FROM mood
     WHERE mood_id = $1
     `,
     [mood_id],
   );
 
-  response.json(dbResult.rows); // svare i et array med et objekt inden i med key:value pair -- metodekald
+  response.json(dbResult.rows); // svare i et array med et objekt indeni med key:value pair -- metodekald
   
 }
 
-// Hent genre-vinder baseret på genre-stemmer for et party
+// Handler function der henter genre-vinder baseret på genre-stemmer for et party
 async function onGetGenreWinnerByGenreVote(request, response) {
   const party_id = request.params.party_id;
 
@@ -47,12 +47,12 @@ async function onGetGenreWinnerByGenreVote(request, response) {
     SELECT genre_id, COUNT(*)::int AS stemmer -- :: betyder at det skal være et heltal
     FROM genre_vote
     WHERE party_id = $1
-    GROUP BY genre_id -- den sørger for den ved hvad den skal COUNT. Uden denne ville den count alle stemmer til et tal, men denne sørger for de tælles pr genre
+    GROUP BY genre_id -- den sørger for den ved hvad den skal COUNT.
     ORDER BY stemmer DESC
     `,
     [party_id],
   );
-// tjekker for om der er stememr
+// tjekker for om der er stemmer
   if (dbResult.rows.length === 0) {
     return response.json({ message: "no votes yet" });
   }
@@ -62,21 +62,21 @@ async function onGetGenreWinnerByGenreVote(request, response) {
     return response.json(dbResult.rows[0]);
   }
 
-  // de to variabler henter bare de to genre med flest stemmer
+  // de to variabler henter de to genre med flest stemmer
   const stemmer_genre1 = dbResult.rows[0].stemmer;
   const stemmer_genre2 = dbResult.rows[1].stemmer;
 
   if (stemmer_genre1 === stemmer_genre2) {
-    const uafgjort = [dbResult.rows[0], dbResult.rows[1]]; // laver nyt array med de uafgjorte genres. I arrayet er de hvert deres objekt. Gøres fordi det er disse to der skal vælges imellem
-    const tilfældig = uafgjort[Math.floor(Math.random() * uafgjort.length)]; // math random giver et tal mellem 0 og 1, som gange med 2, fordi det er længden på "uafgjort", mat.floor, runder det ned
+    const uafgjort = [dbResult.rows[0], dbResult.rows[1]]; // laver nyt array med de uafgjorte genres. 
+    const tilfældig = uafgjort[Math.floor(Math.random() * uafgjort.length)]; 
     return response.json(tilfældig);
   }
 
-  // hvis det ikek er uafgjort returneres genren med flest stemmer
+  // hvis det ikke er uafgjort returneres genren med flest stemmer
   response.json(dbResult.rows[0]); // svare i JSON format for at frontend og javascript kan forstå
 }
 
-// Hent playlist-information for et party baseret på party_id
+// Handler function som henter playlist-information for et party baseret på party_id
 async function onGetPartyInformation(request, response) {
   const party_id = request.params.party_id;
 
@@ -87,7 +87,7 @@ async function onGetPartyInformation(request, response) {
       t.title,
       a.artist_name AS artist,
       t.duration_ms,
-      COUNT(tv.track_vote_id)::int AS stemmer
+      COUNT(tv.track_vote_id)::int AS stemmer - :: konvertere til heltal
     FROM party p
     JOIN track_playlist tp 
       ON tp.playlist_id = p.playlist_id
@@ -108,11 +108,11 @@ async function onGetPartyInformation(request, response) {
   response.json(dbResult.rows);
 }
 
-// Hent partymedlemmer baseret på party_code
+// Handler function som henter partymedlemmer baseret på party_code
 async function onGetPartyMembers(request, response) {
   const party_code = request.params.party_code;
 
-  const result = await db.query(
+  const dbResult = await db.query(
     `
     SELECT u.user_name
     FROM partymember pm
@@ -124,16 +124,16 @@ async function onGetPartyMembers(request, response) {
     [party_code],
   );
 
-  response.json(result.rows);
+  response.json(dbResult.rows);
 }
 
-// Hent genre-stemmer for et party
+// Handler function som henter genre-stemmer for et party
 async function onGetGenreVotes(request, response) {
   const party_id = request.params.party_id;
 
-  const result = await db.query(
+  const dbResult = await db.query(
     `
-    SELECT genre_id, COUNT(*)::int AS votes
+    SELECT genre_id, COUNT(*)::int AS votes - :: konvertere til heltal
     FROM genre_vote
     WHERE party_id = $1
     GROUP BY genre_id
@@ -141,16 +141,15 @@ async function onGetGenreVotes(request, response) {
     [party_id],
   );
 
-  response.json(result.rows);
+  response.json(dbResult.rows);
 }
 
 
-// Opret party og host user
+// Handler functiom som opretter party og host user
 async function onPostPartyForUser(request, response) {
-  // bruges til at se om koden virker. Gør den ikke det går man til catch, og giver en error message til clienten
-  try { // smart at have med her fordi der er meget der kan gå galt
+  try { // bruges til at se om koden virker. Gør den ikke det går man til catch, og giver en error message til clienten
     const mood = request.params.mood;
-    const navn = request.params.navn;
+    const user_name = request.params.user_name;
 
     const moodResult = await db.query(
       `
@@ -161,7 +160,7 @@ async function onPostPartyForUser(request, response) {
       [mood],
     );
 
-    const mood_id = moodResult.rows[0].mood_id; // finder databse resultater relateret til mood_id - altså hvilke genre der skal præsenteres
+    const mood_id = moodResult.rows[0].mood_id; // finder database resultater relateret til mood_id - altså hvilke genre der skal præsenteres
 
     const playlistResult = await db.query(
       `
@@ -174,27 +173,28 @@ async function onPostPartyForUser(request, response) {
       [mood_id],
     );
 
-    const playlist_id = playlistResult.rows[0].playlist_id; // sørger for at playlist id bliver sat til det databasen returnere
+    const playlist_id = playlistResult.rows[0].playlist_id; // sørger for at playlist_id bliver sat til det databasen returnere
 
-    const userResult = await db.query( // database resultater udfra user og navn - der oprettes en ny user
+    const userResult = await db.query(
+      // database resultater udfra user og navn - der oprettes en ny user
       `
       INSERT INTO users (user_name, is_host) -- insert fordi det er en POST metode 
       VALUES ($1, true)
-      RETURNING user_id, user_name -- giv mig de nye user med user_id og user name tilbage
+      RETURNING user_id, user_name -- giv mig de nye user med user_id og user_name tilbage
       `,
-      [navn],
+      [user_name],
     );
 
-    const user_id = userResult.rows[0].user_id; // gemmer user_id
+    const user_id = userResult.rows[0].user_id; // gemmer det nye user_id
 
     const partyResult = await db.query( // opretter party
       `
       INSERT INTO party (party_name, party_code, mood_id, playlist_id, user_id)
-      VALUES ($1, $2, $3, $4, $5) -- navn, random party_code, mood_id, playlist_id & user_id
+      VALUES ($1, $2, $3, $4, $5) -- party_name, random party_code, mood_id, playlist_id & user_id
       RETURNING party_id, party_code, party_name
       `,
-      [
-        navn,
+      [ // Det array placeholders referere til
+        party_name,
         Math.floor(Math.random() * 9000) + 1000, // laver en kode til party mellem tallene 1000 og 9999
         mood_id,
         playlist_id,
@@ -202,9 +202,10 @@ async function onPostPartyForUser(request, response) {
       ],
     );
 
-    const party_id = partyResult.rows[0].party_id; // gemmer det party id der er på det nye oprettede party
+    const party_id = partyResult.rows[0].party_id; // gemmer det nye party_id
 
-    await db.query( // tilføjer host som partymember
+    await db.query(
+      // tilføjer host som partymember
       `
       INSERT INTO partymember (party_id, user_id)
       VALUES ($1, $2)
@@ -212,7 +213,8 @@ async function onPostPartyForUser(request, response) {
       [party_id, user_id],
     );
 
-    response.json({ // send alt dette retur som response
+    response.json({
+      // send alt dette retur som response til frontend
       party_id: party_id,
       party_code: partyResult.rows[0].party_code,
       party_name: partyResult.rows[0].party_name,
@@ -231,7 +233,7 @@ async function onPostPartyForUser(request, response) {
 async function onPostJoinParty(request, response) {
   try {
     const party_code = request.params.party_code;
-    const navn = request.params.navn;
+    const user_name = request.params.user_name;
 
     const partyResult = await db.query(
       `
@@ -247,24 +249,25 @@ async function onPostJoinParty(request, response) {
       [party_code],
     );
 
+    // Hvis arrayets længde er det samme som 0 - altså ingen party-code
     if (partyResult.rows.length === 0) {
       return response.status(404).json({ error: "Party not found" });
     }
 
-    const party = partyResult.rows[0];
+    const party = partyResult.rows[0]; // gemmer forrige resultater i "party"
 
-    const userResult = await db.query(
+    const userResult = await db.query( // opretter user i databasen
       `
       INSERT INTO users (user_name, is_host)
       VALUES ($1, false)
       RETURNING user_id, user_name
       `,
-      [navn],
+      [user_name],
     );
 
-    const user_id = userResult.rows[0].user_id;
+    const user_id = userResult.rows[0].user_id; // gemmer user med user_id
 
-    await db.query(
+    await db.query( //opretter partymember udfra user
       `
       INSERT INTO partymember (party_id, user_id)
       VALUES ($1, $2)
@@ -272,7 +275,7 @@ async function onPostJoinParty(request, response) {
       [party.party_id, user_id],
     );
 
-    response.json({ // de data frontend skal bruge
+    response.json({ // sender følgende data til frontend
       party_id: party.party_id,
       party_code: party.party_code,
       party_name: party.party_name,
@@ -280,9 +283,9 @@ async function onPostJoinParty(request, response) {
       user_name: userResult.rows[0].user_name,
       mood_type: party.mood_type,
     });
-  } catch (error) {
-    console.log("JOIN PARTY ERROR:", error.message);
-    response.status(500).json({ error: error.message });
+  } catch (error) { // ved fejl
+    console.log("JOIN PARTY ERROR:", error.message); // logger fejl i consolen
+    response.status(500).json({ error: error.message }); // sender fejl til browseren
   }
 }
 
@@ -293,7 +296,7 @@ async function onPostGenreVote(request, response) {
     const party_id = request.params.party_id;
     const user_id = request.params.user_id;
 
-    await db.query(
+    await db.query( // opdatere tabellen med genre votes
       `
       INSERT INTO genre_vote (genre_id, party_id, user_id)
       VALUES ($1, $2, $3)
@@ -302,9 +305,9 @@ async function onPostGenreVote(request, response) {
     );
 
     response.json({ message: "Genre vote registered!" });
-  } catch (error) {
-    console.log("GENRE VOTE ERROR:", error.message);
-    response.status(500).json({ error: error.message });
+  } catch (error) { // ved fejl i koden
+    console.log("GENRE VOTE ERROR:", error.message); // logger til consolen
+    response.status(500).json({ error: error.message }); // sender fejl til browser
   }
 }
 

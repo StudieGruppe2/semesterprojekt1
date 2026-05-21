@@ -13,8 +13,9 @@ body {
   margin-top: 0%;
   padding-top: 0%;
   background: linear-gradient(to right, #000000, #3533cd);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; /* Gør at baggrunden kun vises inde i selve teksten */
+  -webkit-text-fill-color: transparent; /* Gør den normale tekstfarve gennemsigtig,
+så baggrunden (fx gradienten) kan ses */
   filter: drop-shadow(4px 6px 0px rgba(0, 0, 0, 0.5));
 }
 
