@@ -87,7 +87,7 @@ async function onGetPartyInformation(request, response) {
       t.title,
       a.artist_name AS artist,
       t.duration_ms,
-      COUNT(tv.track_vote_id)::int AS stemmer - :: konvertere til heltal
+      COUNT(tv.track_vote_id)::int AS stemmer -- :: konvertere til heltal
     FROM party p
     JOIN track_playlist tp 
       ON tp.playlist_id = p.playlist_id
@@ -133,7 +133,7 @@ async function onGetGenreVotes(request, response) {
 
   const dbResult = await db.query(
     `
-    SELECT genre_id, COUNT(*)::int AS votes - :: konvertere til heltal
+    SELECT genre_id, COUNT(*)::int AS votes -- :: konvertere til heltal
     FROM genre_vote
     WHERE party_id = $1
     GROUP BY genre_id
@@ -152,7 +152,7 @@ async function onPostPartyForUser(request, response) {
     const user_name = request.params.user_name;
 
     const party_name = user_name + "'s party"; // for at selve party navnet er korrket 
-    
+
     const moodResult = await db.query(
       `
       SELECT mood_id
