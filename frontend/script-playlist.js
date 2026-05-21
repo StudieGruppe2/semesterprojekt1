@@ -164,4 +164,6 @@ async function stemPaaSang(track_id) {
 
 // Kalder hentPlaylist første gang siden loader
 hentPlaylist();
-
+setInterval(function () {
+  hentPlaylist();
+}, 3000);
