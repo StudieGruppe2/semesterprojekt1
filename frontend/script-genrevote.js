@@ -95,7 +95,7 @@ async function updateVotes() {
 
   
   votes.forEach(function (vote) {
-    if (Number(vote.genre_id) === Number(genre1_id)) { // sørger for at begge værdier sammenlignes i tal
+    if (Number(vote.genre_id) === Number(genre1_id)) { // sørger for at begge værdier er tal
       genre1Votes = Number(vote.votes); 
     }
 

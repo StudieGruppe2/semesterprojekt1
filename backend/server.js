@@ -35,7 +35,6 @@ async function onGetMoodTypeByMoodId(request, response) {
   );
 
   response.json(dbResult.rows); // svare i et array med et objekt indeni med key:value pair -- metodekald
-  
 }
 
 // Handler function der henter genre-vinder baseret på genre-stemmer for et party

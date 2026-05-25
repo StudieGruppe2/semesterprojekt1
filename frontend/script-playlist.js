@@ -7,7 +7,7 @@ const user_id = params.get("user_id");
 let timerInterval = null;
 let timerStartet = false;
 let afspilledeSange = [];
-let stemtePaaSange = [];
+/*let stemtePaaSange = [];*/
 
 // Den sang der spiller lige nu
 let nuværendeSang = null;
