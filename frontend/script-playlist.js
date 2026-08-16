@@ -54,10 +54,22 @@ async function hentPlaylist() {
   const response = await fetch("/api/party/" + party_id + "/playlist");
   const alleSange = await response.json();
 
+<<<<<<< Updated upstream
   // Sange med stemmer der ikke er spillet endnu - vises øverst
   const sangemedStemmer = alleSange.filter(function (sang) {
     return sang.stemmer > 0 && !afspilledeSange.includes(sang.track_id);
   });
+=======
+  // Fjerner sange der allerede er spillet
+  // Sætter afspillede sange bagerst i køen
+const ikkAfspillede = alleSange.filter(function (sang) {
+  return !afspilledeSange.includes(sang.track_id);
+});
+const alleredeAfspillede = alleSange.filter(function (sang) {
+  return afspilledeSange.includes(sang.track_id);
+});
+const sange = ikkAfspillede.concat(alleredeAfspillede);
+>>>>>>> Stashed changes
 
   // Sange uden stemmer der ikke er spillet endnu - vises i midten
   const sangeUdenStemmer = alleSange.filter(function (sang) {
